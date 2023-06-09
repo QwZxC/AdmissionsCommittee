@@ -1,0 +1,94 @@
+﻿<Page x:Class="AdmissionsCommittee.Views.Windows.Main.Pages.RegistrationEnrollePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AdmissionsCommittee.Views.Windows.Main.Pages"
+      xmlns:vm="clr-namespace:AdmissionsCommittee.ViewModels"
+      xmlns:system="clr-namespace:System;assembly=mscorlib"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="RegistrationEnrollePage">
+    
+    <Page.DataContext>
+        <vm:RegistrationEnrolleViewModel/>
+    </Page.DataContext>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="220"/>
+        </Grid.ColumnDefinitions>
+
+        <DataGrid ItemsSource="{Binding Enrollees}"
+                  AutoGenerateColumns="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="False"
+                  CanUserAddRows="False"
+                  HeadersVisibility="Column">
+            <DataGrid.Columns>
+
+
+                <DataGridCheckBoxColumn Binding="{Binding IsSelected}"/>
+
+                <DataGridTextColumn Header="Имя"
+                                    Binding="{Binding Name}"/>
+
+                <DataGridTextColumn Header="Фамилия"
+                                    Binding="{Binding Surname}"/>
+
+                <DataGridTextColumn Header="Отчество"
+                                    Binding="{Binding Patronymic}"/>
+
+                <DataGridComboBoxColumn Header="Пол"
+                                        SelectedValueBinding="{Binding Gender}">
+                    <DataGridComboBoxColumn.ItemsSource>
+                        <CompositeCollection>
+                            <system:String>Ж</system:String>
+                            <system:String>М</system:String>
+                        </CompositeCollection>
+                    </DataGridComboBoxColumn.ItemsSource>
+                </DataGridComboBoxColumn>
+
+                <DataGridTextColumn Header="Дата рождения"
+                                    Binding="{Binding DateOfBirth}"/>
+
+                <DataGridTextColumn Header="СНИЛС"
+                                    Binding="{Binding Snils}"/>
+
+                <DataGridTextColumn Header="Дата поступления"
+                                    Binding="{Binding YearOfAdmission}"/>
+                
+            </DataGrid.Columns>
+            
+        </DataGrid>
+        
+        <DockPanel Grid.Column="1"
+                   Style="{StaticResource buttonsPanel}">
+
+            <Button Content="Добавить"
+                    Style="{StaticResource panelButton}"
+                    Command="{Binding AddCommand}"/>
+
+            <Button Content="Удалить"
+                    Style="{StaticResource panelButton}"
+                    Command="{Binding RemoveCommand}"/>
+            
+            <Button Content="Coхранить"
+                    Style="{StaticResource panelButton}"
+                    Command="{Binding SaveCommand}"/>
+
+            <Button Content="Далее"
+                    Style="{StaticResource panelButton}"
+                    Command="{Binding GoToSelectCitizenshipCommand}"/>
+
+        </DockPanel>
+    </Grid>
+</Page>
