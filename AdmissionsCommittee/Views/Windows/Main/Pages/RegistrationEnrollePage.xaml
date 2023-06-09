@@ -35,8 +35,11 @@
                   HeadersVisibility="Column">
             <DataGrid.Columns>
 
+                <DataGridCheckBoxColumn MinWidth="30"
+                                        HeaderTemplate="{StaticResource DataGridColumnHeaderCheckBoxTemplate}"
+                                        ElementStyle="{StaticResource DataGridSelectionCheckBoxStyle}"
+                                        EditingElementStyle="{StaticResource DataGridSelectionCheckBoxStyle}"/>
 
-                <DataGridCheckBoxColumn Binding="{Binding IsSelected}"/>
 
                 <DataGridTextColumn Header="Имя"
                                     Binding="{Binding Name}"/>

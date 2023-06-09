@@ -1,5 +1,4 @@
 ﻿using AdmissionsCommittee.Models.Base;
-using System.Collections.Generic;
 
 namespace AdmissionsCommittee.Models
 {
