@@ -8,7 +8,10 @@ namespace AdmissionsCommittee.Models
         private string country;
         private List<Enrollee> enrollees;
 
-        public Citizenship() { }
+        public Citizenship() 
+        {
+            Enrollees = new List<Enrollee>();
+        }
 
         public string Country 
         { 

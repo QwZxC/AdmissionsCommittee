@@ -10,7 +10,6 @@ namespace AdmissionsCommittee.Types
     {
         RegistrationEnrollePage,
         SelectCitizenshipPage,
-        PlaceOfResidencePage,
         EducationPage,
         AvarageScoreSnilsPage,
         DisabilityPage,

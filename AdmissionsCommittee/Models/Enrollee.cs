@@ -20,6 +20,7 @@ namespace AdmissionsCommittee.Models
         private PlaceOfResidence placeOfResidence;
         private Speciality speciality;
         private Citizenship citizenship;
+        private District district;
         private bool isBudget;
         private bool isEnlisted;
 
@@ -115,6 +116,12 @@ namespace AdmissionsCommittee.Models
             set { Set(ref placeOfResidence, value); }
         }
 
+        public District District
+        {
+            get { return district; }
+            set { Set(ref district, value); }
+        }
+
         public bool IsBudget
         {
             get { return isBudget; }
@@ -140,5 +147,7 @@ namespace AdmissionsCommittee.Models
         public int? PlaceOfResidenceId { get; set; }
 
         public int? WardId { get; set; }
+
+        public int? DistrictId { get; set; }
     }
 }

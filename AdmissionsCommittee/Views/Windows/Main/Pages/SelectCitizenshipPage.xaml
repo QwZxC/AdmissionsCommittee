@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:AdmissionsCommittee.Views.Windows.Main.Pages"
       xmlns:vm="clr-namespace:AdmissionsCommittee.ViewModels"
+      xmlns:converters="clr-namespace:AdmissionsCommittee.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="SelectCitizenshipPage">
@@ -12,9 +13,96 @@
     <Page.DataContext>
         <vm:SelectCitizenshipViewModel/>
     </Page.DataContext>
+
+    <Page.Resources>
+        <converters:PrefixValueConverter  x:Key="PrefixValueConverter"/>
+        <CollectionViewSource x:Key="Citizenships" Source="{Binding Citizenships}"/>
+        <CollectionViewSource x:Key="PlaceOfResidences" Source="{Binding PlaceOfResidences}"/>
+        <CollectionViewSource x:Key="Districts" Source="{Binding Districts}"/>
+    </Page.Resources>
     
     <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="220"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0"
+               HorizontalContentAlignment="Center"
+               Content="Выбор гражданства"
+               Grid.ColumnSpan="2"
+               FontFamily="Courier New"
+               FontSize="30"/>
+
+        <DataGrid Grid.Row="1"
+                  Grid.Column="0"
+                  ItemsSource="{Binding Enrollees}"
+                  Style="{StaticResource BaseDataGrid}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Абитуриент">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat=" {0} {1} {2}">
+                                        <Binding Path="Surname"/>
+                                        <Binding Path="Name" Converter="{StaticResource PrefixValueConverter}" ConverterParameter="1"/>
+                                        <Binding Path="Patronymic" Converter="{StaticResource PrefixValueConverter}" ConverterParameter="1"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridComboBoxColumn Header="Гражданство"
+                                        ItemsSource="{Binding Source={StaticResource Citizenships}}"
+                                        SelectedItemBinding="{Binding Citizenship}"
+                                        DisplayMemberPath="Country"/>
+
+                <DataGridComboBoxColumn Header="Регион"
+                                        ItemsSource="{Binding Source={StaticResource PlaceOfResidences}}"
+                                        SelectedItemBinding="{Binding PlaceOfResidence}"
+                                        DisplayMemberPath="Name">
+                    <DataGridComboBoxColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Citizenship.Country}" Value="Россия">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridComboBoxColumn.CellStyle>
+                </DataGridComboBoxColumn>
+
+                <DataGridComboBoxColumn Header="Субъекты"
+                                        ItemsSource="{Binding Source={StaticResource Districts}}"
+                                        SelectedItemBinding="{Binding District}"
+                                        DisplayMemberPath="Name">
+                    <DataGridComboBoxColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding PlaceOfResidence.Name}" Value="Костромская область">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridComboBoxColumn.CellStyle>
+                </DataGridComboBoxColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        
         <DockPanel Grid.Column="1"
+                   Grid.RowSpan="2"
                    Style="{StaticResource buttonsPanel}">
 
             <Button Content="Добавить"
@@ -24,7 +112,8 @@
                     Style="{StaticResource panelButton}"/>
 
             <Button Content="Coхранить"
-                    Style="{StaticResource panelButton}"/>
+                    Style="{StaticResource panelButton}"
+                    Command="{Binding SaveCommand}"/>
 
             <Button Content="Далее"
                     Command="{Binding GoToPlaceOfResidencePageCommand}"

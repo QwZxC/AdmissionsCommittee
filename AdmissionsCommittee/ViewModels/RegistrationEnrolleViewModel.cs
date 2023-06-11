@@ -67,7 +67,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public bool CanRemoveCommandExecute(object parameter)
         {
-            return true;
+            return SelectedEnrolle.Any();
         }
 
         public void OnRemoveCommandExecuted(object parameter)

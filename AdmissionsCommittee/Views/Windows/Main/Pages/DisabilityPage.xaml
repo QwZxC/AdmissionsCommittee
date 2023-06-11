@@ -12,10 +12,28 @@
     <Page.DataContext>
         <vm:DisabilityViewModel/>
     </Page.DataContext>
-    
-    
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="220"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0"
+               HorizontalContentAlignment="Center"
+               Content="Инвалидность"
+               Grid.ColumnSpan="2"
+               FontFamily="Courier New"
+               FontSize="30"/>
+
+
         <DockPanel Grid.Column="1"
+                   Grid.RowSpan="2"
                    Style="{StaticResource buttonsPanel}">
 
             <Button Content="Добавить"

@@ -39,7 +39,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public void OnGoToPlaceOfResidencePageCommandExecuted(object parameter)
         {
-            MainViewModel.SwitchPage(MainPageType.PlaceOfResidencePage);
+            MainViewModel.SwitchPage(MainPageType.SelectCitizenshipPage);
         }
         
         #endregion

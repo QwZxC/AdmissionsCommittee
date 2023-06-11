@@ -1,10 +1,12 @@
 ﻿using AdmissionsCommittee.Models.Base;
+using System.Collections.Generic;
 
 namespace AdmissionsCommittee.Models
 {
     public class District : BaseModel
     {
         private string name;
+        private List<Enrollee> enrolle;
 
         public District() { }
 
@@ -14,6 +16,10 @@ namespace AdmissionsCommittee.Models
             set { Set(ref name, value); }
         }
 
-        public int PlaceOfResidenceId { get; set; }
+        public List<Enrollee> Enrollees
+        {
+            get { return enrolle; }
+            set { Set(ref enrolle, value); }   
+        }
     }
 }

@@ -14,7 +14,6 @@ namespace AdmissionsCommittee.ViewModels
         private static Page selectedPage;
         private static RegistrationEnrollePage registrationEnrollePage;
         private static SelectCitizenshipPage selectCitizenshipPage;
-        private static PlaceOfResidencePage placeOfResidencePage;
         private static EducationPage educationPage;
         private static AvarageScoreSnilsPage avarageScoreSnilsPage;
         private static DisabilityPage disabilityPage;
@@ -50,14 +49,6 @@ namespace AdmissionsCommittee.ViewModels
                         selectCitizenshipPage = new SelectCitizenshipPage();
                     }
                     SelectedPage = selectCitizenshipPage;
-                    placeOfResidencePage = null;
-                    break;
-                case MainPageType.PlaceOfResidencePage:
-                    if (placeOfResidencePage == null)
-                    {
-                        placeOfResidencePage = new PlaceOfResidencePage();
-                    }
-                    SelectedPage = placeOfResidencePage;
                     educationPage = null;
                     break;
                 case MainPageType.EducationPage:

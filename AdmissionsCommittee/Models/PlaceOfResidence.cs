@@ -6,7 +6,6 @@ namespace AdmissionsCommittee.Models
     public class PlaceOfResidence : BaseModel
     {
         public string name;
-        public List<District> districts;
 
         public PlaceOfResidence() { }
 
@@ -14,12 +13,6 @@ namespace AdmissionsCommittee.Models
         {
             get { return name; }
             set { Set(ref name, value); }
-        }
-
-        public List<District> Districts
-        {
-            get { return districts; }
-            set { Set(ref districts, value); } 
         }
     }
 }
