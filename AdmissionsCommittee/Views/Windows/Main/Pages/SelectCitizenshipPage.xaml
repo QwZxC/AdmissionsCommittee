@@ -45,7 +45,8 @@
                   ItemsSource="{Binding Enrollees}"
                   Style="{StaticResource BaseDataGrid}">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Абитуриент">
+                <DataGridTemplateColumn Header="Абитуриент"
+                                        Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock>
@@ -62,11 +63,13 @@
                 </DataGridTemplateColumn>
 
                 <DataGridComboBoxColumn Header="Гражданство"
+                                        Width="*"
                                         ItemsSource="{Binding Source={StaticResource Citizenships}}"
                                         SelectedItemBinding="{Binding Citizenship}"
                                         DisplayMemberPath="Country"/>
 
                 <DataGridComboBoxColumn Header="Регион"
+                                        Width="*"
                                         ItemsSource="{Binding Source={StaticResource PlaceOfResidences}}"
                                         SelectedItemBinding="{Binding PlaceOfResidence}"
                                         DisplayMemberPath="Name">
@@ -74,7 +77,7 @@
                         <Style TargetType="DataGridCell">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Citizenship.Country}" Value="Россия">
+                                <DataTrigger Binding="{Binding Citizenship.Country}" Value="Российская Федерация">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -83,6 +86,7 @@
                 </DataGridComboBoxColumn>
 
                 <DataGridComboBoxColumn Header="Субъекты"
+                                        Width="*"
                                         ItemsSource="{Binding Source={StaticResource Districts}}"
                                         SelectedItemBinding="{Binding District}"
                                         DisplayMemberPath="Name">

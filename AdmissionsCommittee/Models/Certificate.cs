@@ -6,7 +6,7 @@ namespace AdmissionsCommittee.Models
     {
         private bool original;
         private double avarageScore;
-        private byte[] photo;
+        private byte[]? photo;
 
         public Certificate() { }
 
@@ -22,7 +22,7 @@ namespace AdmissionsCommittee.Models
             set { Set(ref avarageScore, value); }
         }
 
-        public byte[] Photo
+        public byte[]? Photo
         {
             get { return photo; }
             set { Set(ref photo, value); }
