@@ -4,11 +4,11 @@ namespace AdmissionsCommittee.Models
 {
     public class Disability : BaseModel
     {
-        private byte[] document;
+        private byte[]? document;
 
         public Disability() { }
 
-        public byte[] Document
+        public byte[]? Document
         {
             get { return document; } 
             set { Set(ref document, value); }

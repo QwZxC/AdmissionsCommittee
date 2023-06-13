@@ -16,6 +16,7 @@ namespace AdmissionsCommittee.ViewModels
         private static SelectCitizenshipPage selectCitizenshipPage;
         private static EducationPage educationPage;
         private static AvarageScoreSnilsPage avarageScoreSnilsPage;
+        private static SpecialityPage specialityPage;
         private static DisabilityPage disabilityPage;
         private static GuardianPage guardianPage;
         private static LoadToFilePage loadToFilePage;
@@ -59,12 +60,20 @@ namespace AdmissionsCommittee.ViewModels
                     SelectedPage = educationPage;
                     avarageScoreSnilsPage = null;
                     break;
-                case MainPageType.AvarageScoreSnilsPage:
+                case MainPageType.CertificatePage:
                     if (avarageScoreSnilsPage == null)
                     {
                         avarageScoreSnilsPage = new AvarageScoreSnilsPage();
                     }
                     SelectedPage = avarageScoreSnilsPage;
+                    specialityPage = null;
+                    break;
+                case MainPageType.SpecialityPage:
+                    if (specialityPage == null)
+                    {
+                        specialityPage = new SpecialityPage();
+                    }
+                    SelectedPage = specialityPage;
                     disabilityPage = null;
                     break;
                 case MainPageType.DisabilityPage:

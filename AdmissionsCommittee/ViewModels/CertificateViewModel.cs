@@ -3,9 +3,12 @@ using AdmissionsCommittee.Infrastructure;
 using AdmissionsCommittee.Models;
 using AdmissionsCommittee.Types;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AdmissionsCommittee.ViewModels
@@ -16,9 +19,11 @@ namespace AdmissionsCommittee.ViewModels
         {
             Enrollees = DataBaseConnection.ApplicationContext.Enrollee.ToList();
             Certificates = new ObservableCollection<Certificate>();
-            GoToDisabilityPageCommand = new LambdaCommand(OnDisabilityPageCommandExecuted, CanDisabilityPageCommandExecute);
+            GoToSpecialityPageCommand = new LambdaCommand(OnDisabilityPageCommandExecuted, CanDisabilityPageCommandExecute);
             GoToEducationPageCommand = new LambdaCommand(OnGoToEducationPageCommandExecuted, CanGoToEducationPageExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
+            LoadImageCommand = new LambdaCommand(OnLoadImageCommandExecuted, CanLoadImageCommandExecute);
+            RemoveImageCommand = new LambdaCommand(OnRemoveImageCommandExecuted, CanRemoveImageCommandExecute);
             LoadData();
         }
 
@@ -28,7 +33,7 @@ namespace AdmissionsCommittee.ViewModels
 
         #region GoToPlaceOfResidencePageCommand
 
-        public ICommand GoToDisabilityPageCommand { get; set; }
+        public ICommand GoToSpecialityPageCommand { get; set; }
 
         public bool CanDisabilityPageCommandExecute(object parameter)
         {
@@ -37,7 +42,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public void OnDisabilityPageCommandExecuted(object parameter)
         {
-            MainViewModel.SwitchPage(MainPageType.DisabilityPage);
+            MainViewModel.SwitchPage(MainPageType.SpecialityPage);
         }
 
         #endregion
@@ -81,8 +86,54 @@ namespace AdmissionsCommittee.ViewModels
         }
 
         #endregion
-    
-        public void LoadData()
+
+        #region LoadImageCommand
+
+        public ICommand LoadImageCommand { get; set; }
+
+        private bool CanLoadImageCommandExecute(object parameter)
+        {
+            return true;
+        }
+
+        private void OnLoadImageCommandExecuted(object parameter)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
+            if (!string.IsNullOrWhiteSpace(openFileDialog.FileName))
+            {
+                (parameter as Enrollee).Certificate.Photo = File.ReadAllBytes(openFileDialog.FileName);
+            }
+        }
+
+        #endregion
+
+        #region RemoveImageCommand
+
+        public ICommand RemoveImageCommand { get; set; }
+
+        private bool CanRemoveImageCommandExecute(object parameter)
+        {
+            return true;
+        }
+
+        private void OnRemoveImageCommandExecuted(object parameter)
+        {
+            byte[] image = (parameter as Enrollee).Certificate.Photo;
+            if (image != null)
+            {
+                image = null;
+                MessageBox.Show("Успешно удалено!", "Успех!");
+            }
+            else
+            {
+                MessageBox.Show("Изображеия нет", "Ошибка!");
+            }
+        }
+
+        #endregion
+
+        private void LoadData()
         {
             Enrollees.ForEach(enrollee =>
             {

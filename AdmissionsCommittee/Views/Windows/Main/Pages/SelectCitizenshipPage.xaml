@@ -30,7 +30,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="280"/>
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0"
@@ -71,7 +71,7 @@
                 <DataGridComboBoxColumn Header="Регион"
                                         Width="*"
                                         ItemsSource="{Binding Source={StaticResource PlaceOfResidences}}"
-                                        SelectedItemBinding="{Binding PlaceOfResidence}"
+                                        SelectedItemBinding="{Binding PlaceOfResidence, UpdateSourceTrigger=PropertyChanged}"
                                         DisplayMemberPath="Name">
                     <DataGridComboBoxColumn.CellStyle>
                         <Style TargetType="DataGridCell">

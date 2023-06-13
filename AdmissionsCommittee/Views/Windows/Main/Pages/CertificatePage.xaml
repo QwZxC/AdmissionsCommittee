@@ -26,7 +26,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="280"/>
         </Grid.ColumnDefinitions>
 
         <Label Grid.Row="0"
@@ -64,10 +64,28 @@
                 <DataGridTextColumn Header="Средний балл"
                                     Binding="{Binding Certificate.AvarageScore}"/>
 
-                <DataGridTemplateColumn Header="Скан">
+                <DataGridTemplateColumn Header="Скан"
+                                        Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="Загрузить"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Загрузить">
+                                    <TextBlock.InputBindings>
+                                        <MouseBinding Command="{Binding DataContext.LoadImageCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}}"
+                                                  CommandParameter="{Binding }"
+                                                  MouseAction="LeftDoubleClick"/>
+                                    </TextBlock.InputBindings>
+                                </TextBlock>
+
+                                <TextBlock Text="Удалить"
+                                           Margin="5,0,0,0">
+                                    <TextBlock.InputBindings>
+                                        <MouseBinding Command="{Binding DataContext.RemoveImageCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}}"
+                                                  CommandParameter="{Binding }"
+                                                  MouseAction="LeftDoubleClick"/>
+                                    </TextBlock.InputBindings>
+                                </TextBlock>
+                            </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -85,7 +103,7 @@
                     Command="{Binding SaveCommand}"/>
 
             <Button Content="Далее"
-                    Command="{Binding GoToDisabilityPageCommand}"
+                    Command="{Binding GoToSpecialityPageCommand}"
                     Style="{StaticResource panelButton}"/>
 
             <Button Content="Назад"

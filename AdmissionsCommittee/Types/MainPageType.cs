@@ -11,7 +11,8 @@ namespace AdmissionsCommittee.Types
         RegistrationEnrollePage,
         SelectCitizenshipPage,
         EducationPage,
-        AvarageScoreSnilsPage,
+        CertificatePage,
+        SpecialityPage,
         DisabilityPage,
         WardPage,
         LoadToFilePage

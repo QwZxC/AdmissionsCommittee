@@ -9,8 +9,8 @@
 
     <Style x:Key="panelButton" TargetType="Button">
         <Setter Property="DockPanel.Dock" Value="Top"/>
-        <Setter Property="Width" Value="200"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Width" Value="255"/>
+        <Setter Property="FontSize" Value="24"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="Margin" Value="5"/>

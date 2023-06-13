@@ -10,7 +10,7 @@
         <Setter Property="CanUserResizeRows" Value="False"/>
         <Setter Property="CanUserSortColumns" Value="False"/>
         <Setter Property="HeadersVisibility" Value="Column"/>
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="26"/>
     </Style>
     
     <DataTemplate x:Key="DataGridColumnHeaderTextBlockTemplate">

@@ -61,7 +61,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public void OnAvarageScoreSnilsPageCommandExecuted(object parameter)
         {
-            MainViewModel.SwitchPage(MainPageType.AvarageScoreSnilsPage);
+            MainViewModel.SwitchPage(MainPageType.CertificatePage);
         }
 
         #endregion
