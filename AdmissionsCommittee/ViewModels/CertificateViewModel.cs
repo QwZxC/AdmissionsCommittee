@@ -122,7 +122,7 @@ namespace AdmissionsCommittee.ViewModels
             byte[] image = (parameter as Enrollee).Certificate.Photo;
             if (image != null)
             {
-                image = null;
+                (parameter as Enrollee).Certificate.Photo = null;
                 MessageBox.Show("Успешно удалено!", "Успех!");
             }
             else

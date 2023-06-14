@@ -70,7 +70,7 @@
 
                 <DataGridComboBoxColumn Header="Регион"
                                         Width="*"
-                                        ItemsSource="{Binding Source={StaticResource PlaceOfResidences}}"
+                                        ItemsSource="{Binding Source={StaticResource PlaceOfResidences}, UpdateSourceTrigger=PropertyChanged}"
                                         SelectedItemBinding="{Binding PlaceOfResidence, UpdateSourceTrigger=PropertyChanged}"
                                         DisplayMemberPath="Name">
                     <DataGridComboBoxColumn.CellStyle>

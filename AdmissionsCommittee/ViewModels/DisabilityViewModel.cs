@@ -124,7 +124,7 @@ namespace AdmissionsCommittee.ViewModels
             byte[] image = (parameter as Enrollee).Disability.Document;
             if (image != null)
             {
-                image = null;
+                (parameter as Enrollee).Disability.Document = null;
                 MessageBox.Show("Успешно удалено!", "Успех!");
             }
             else

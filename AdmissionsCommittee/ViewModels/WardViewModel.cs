@@ -122,7 +122,7 @@ namespace AdmissionsCommittee.ViewModels
             byte[] image = (parameter as Enrollee).Ward.Document;
             if (image != null)
             {
-                image = null;
+                (parameter as Enrollee).Ward.Document = null;
                 MessageBox.Show("Успешно удалено!", "Успех!");
             }
             else
