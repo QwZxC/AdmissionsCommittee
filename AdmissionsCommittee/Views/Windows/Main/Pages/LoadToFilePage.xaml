@@ -30,7 +30,21 @@
                Grid.ColumnSpan="2"
                FontFamily="Courier New"
                FontSize="30"/>
-        
+
+        <Button Grid.Column="0"
+                Command="{Binding LoadToExcelCommand}"
+                Grid.Row="1"
+                BorderBrush="Transparent"
+                Background="Transparent"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <Button.Content>
+                <Image Source="/Views/Windows/Main/Pages/excel.png"
+                       Width="100"
+                       Height="100"/>
+            </Button.Content>
+        </Button>
+
         <DockPanel Grid.Column="1"
                    Grid.RowSpan="2"
                    Style="{StaticResource buttonsPanel}">

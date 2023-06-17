@@ -1,5 +1,7 @@
-﻿using AdmissionsCommittee.Models.Base;
+﻿using AdmissionsCommittee.Infrastructure;
+using AdmissionsCommittee.Models.Base;
 using System;
+using System.Linq;
 
 namespace AdmissionsCommittee.Models
 {
@@ -107,13 +109,27 @@ namespace AdmissionsCommittee.Models
         public Citizenship Citizenship
         {
             get { return citizenship; }
-            set { Set(ref citizenship, value); }
+            set 
+            {
+                if (value.Country != "Российская Федерация")
+                {
+                    PlaceOfResidence = DataBaseConnection.ApplicationContext.PlaceOfResidence.ToList().Find(district => district.Name == "Иностранный гражданин");
+                }
+                Set(ref citizenship, value); 
+            }
         }
 
         public PlaceOfResidence PlaceOfResidence
         {
             get { return placeOfResidence; }
-            set { Set(ref placeOfResidence, value); }
+            set
+            {
+                if (value.Name != "Костромская область") 
+                {
+                    District = DataBaseConnection.ApplicationContext.District.ToList().Find(district => district.Name == "За пределами Костромской области");
+                }
+                Set(ref placeOfResidence, value); 
+            }
         }
 
         public District District

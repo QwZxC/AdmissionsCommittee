@@ -68,11 +68,37 @@
 
                 <DataGridCheckBoxColumn Header="Бюджет"
                                         MinWidth="120"
-                                        Binding="{Binding IsBudget}"/>
+                                        Binding="{Binding IsBudget}">
+                    <DataGridCheckBoxColumn.EditingElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.EditingElementStyle>
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                </DataGridCheckBoxColumn>
                 
                 <DataGridCheckBoxColumn Header="Зачислен"
                                         MinWidth="120"
-                                        Binding="{Binding IsEnlisted}"/>
+                                        Binding="{Binding IsEnlisted}">
+                    <DataGridCheckBoxColumn.EditingElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.EditingElementStyle>
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                </DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
 

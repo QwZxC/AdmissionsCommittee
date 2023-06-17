@@ -1,6 +1,7 @@
 ﻿using AdmissionsCommittee.Commands;
 using AdmissionsCommittee.Infrastructure;
 using AdmissionsCommittee.Models;
+using AdmissionsCommittee.Models.Context;
 using AdmissionsCommittee.Types;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
@@ -72,7 +73,15 @@ namespace AdmissionsCommittee.ViewModels
 
         public void OnRemoveCommandExecuted(object parameter)
         {
-            SelectedEnrolle.ToList().ForEach(item => Enrollees.Remove(item));
+            SelectedEnrolle.ToList().ForEach(enrolee => Enrollees.Remove(enrolee));
+            ApplicationContext db = DataBaseConnection.ApplicationContext;
+            SelectedEnrolle.ToList().ForEach(enrolee => 
+            {
+                db.Ward.FromSqlRaw("DELETE FROM public.\"Ward\"\r\n\tWHERE \"Id\" =?;", enrolee.Ward.Id);
+                db.Certificate.FromSqlRaw("DELETE FROM public.\"Ward\"\r\n\tWHERE \"Id\" =?;", enrolee.Certificate.Id);
+                db.Disability.FromSqlRaw("DELETE FROM public.\"Ward\"\r\n\tWHERE \"Id\" =?;", enrolee.Disability.Id);
+                db.Enrollee.Remove(enrolee);
+            });
             SelectedEnrolle.Clear();
         }
 

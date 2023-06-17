@@ -46,7 +46,7 @@
                   Style="{StaticResource BaseDataGrid}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Абитуриент"
-                                        Width="*">
+                                        MinWidth="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock>
@@ -63,39 +63,40 @@
                 </DataGridTemplateColumn>
 
                 <DataGridComboBoxColumn Header="Гражданство"
-                                        Width="*"
+                                        Width="290"
                                         ItemsSource="{Binding Source={StaticResource Citizenships}}"
                                         SelectedItemBinding="{Binding Citizenship}"
                                         DisplayMemberPath="Country"/>
 
-                <DataGridComboBoxColumn Header="Регион"
-                                        Width="*"
+                <DataGridComboBoxColumn Header="Субъект"
                                         ItemsSource="{Binding Source={StaticResource PlaceOfResidences}, UpdateSourceTrigger=PropertyChanged}"
                                         SelectedItemBinding="{Binding PlaceOfResidence, UpdateSourceTrigger=PropertyChanged}"
                                         DisplayMemberPath="Name">
                     <DataGridComboBoxColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Citizenship.Country}" Value="Российская Федерация">
-                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridComboBoxColumn.CellStyle>
                 </DataGridComboBoxColumn>
 
-                <DataGridComboBoxColumn Header="Субъекты"
+                <DataGridComboBoxColumn Header="Регион"
                                         Width="*"
                                         ItemsSource="{Binding Source={StaticResource Districts}}"
                                         SelectedItemBinding="{Binding District}"
                                         DisplayMemberPath="Name">
                     <DataGridComboBoxColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="IsEnabled" Value="False"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding PlaceOfResidence.Name}" Value="Костромская область">
-                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="IsEnabled" Value="True"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -104,16 +105,10 @@
 
             </DataGrid.Columns>
         </DataGrid>
-        
+
         <DockPanel Grid.Column="1"
                    Grid.RowSpan="2"
                    Style="{StaticResource buttonsPanel}">
-
-            <Button Content="Добавить"
-                    Style="{StaticResource panelButton}"/>
-
-            <Button Content="Удалить"
-                    Style="{StaticResource panelButton}"/>
 
             <Button Content="Coхранить"
                     Style="{StaticResource panelButton}"

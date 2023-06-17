@@ -59,7 +59,20 @@
                 </DataGridTemplateColumn>
 
                 <DataGridCheckBoxColumn Header="Оригинал"
-                                        Binding="{Binding Certificate.Original}"/>
+                                        Binding="{Binding Certificate.Original}">
+                    <DataGridCheckBoxColumn.EditingElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.EditingElementStyle>
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                </DataGridCheckBoxColumn>
 
                 <DataGridTextColumn Header="Средний балл"
                                     Binding="{Binding Certificate.AvarageScore}"/>

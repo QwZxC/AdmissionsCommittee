@@ -46,6 +46,7 @@
                                     Binding="{Binding Name}"/>
 
                 <DataGridTextColumn Header="Описание"
+                                    Width="*"
                                     Binding="{Binding Description}"/>
             </DataGrid.Columns>
         </DataGrid>

@@ -58,6 +58,11 @@
                 
                 <DataGridComboBoxColumn Header="Пол"
                                         SelectedValueBinding="{Binding Gender}">
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
                     <DataGridComboBoxColumn.ItemsSource>
                         <CompositeCollection>
                             <system:String>Ж</system:String>
@@ -67,8 +72,7 @@
                 </DataGridComboBoxColumn>
                 
                 <DataGridTextColumn Header="Дата рождения"
-                                    Binding="{Binding DateOfBirth}"
-                                    Width="*"/>
+                                    Binding="{Binding DateOfBirth}"/>
                 
                 <DataGridTextColumn Header="СНИЛС"
                                     Binding="{Binding Snils}"/>

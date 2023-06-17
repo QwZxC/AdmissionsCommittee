@@ -33,11 +33,13 @@ namespace AdmissionsCommittee.Migrations
                     b.Property<double>("AvarageScore")
                         .HasColumnType("double precision");
 
+                    b.Property<int>("EnrolleeId")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("Original")
                         .HasColumnType("boolean");
 
                     b.Property<byte[]>("Photo")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.HasKey("Id");
@@ -71,7 +73,6 @@ namespace AdmissionsCommittee.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<byte[]>("Document")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.HasKey("Id");
@@ -133,6 +134,9 @@ namespace AdmissionsCommittee.Migrations
                     b.Property<int?>("CertificateId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("CertificateId1")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("CitizenshipId")
                         .HasColumnType("integer");
 
@@ -187,7 +191,7 @@ namespace AdmissionsCommittee.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CertificateId");
+                    b.HasIndex("CertificateId1");
 
                     b.HasIndex("CitizenshipId");
 
@@ -232,7 +236,6 @@ namespace AdmissionsCommittee.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -253,7 +256,6 @@ namespace AdmissionsCommittee.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<byte[]>("Document")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.HasKey("Id");
@@ -265,7 +267,9 @@ namespace AdmissionsCommittee.Migrations
                 {
                     b.HasOne("AdmissionsCommittee.Models.Certificate", "Certificate")
                         .WithMany()
-                        .HasForeignKey("CertificateId");
+                        .HasForeignKey("CertificateId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AdmissionsCommittee.Models.Citizenship", "Citizenship")
                         .WithMany("Enrollees")
@@ -288,7 +292,7 @@ namespace AdmissionsCommittee.Migrations
                         .HasForeignKey("PlaceOfResidenceId");
 
                     b.HasOne("AdmissionsCommittee.Models.Speciality", "Speciality")
-                        .WithMany()
+                        .WithMany("Enrollees")
                         .HasForeignKey("SpecialityId");
 
                     b.HasOne("AdmissionsCommittee.Models.Ward", "Ward")
@@ -318,6 +322,11 @@ namespace AdmissionsCommittee.Migrations
                 });
 
             modelBuilder.Entity("AdmissionsCommittee.Models.District", b =>
+                {
+                    b.Navigation("Enrollees");
+                });
+
+            modelBuilder.Entity("AdmissionsCommittee.Models.Speciality", b =>
                 {
                     b.Navigation("Enrollees");
                 });
