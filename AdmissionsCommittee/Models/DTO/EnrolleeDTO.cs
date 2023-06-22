@@ -3,9 +3,9 @@ using AdmissionsCommittee.Models.Base;
 using System;
 using System.Linq;
 
-namespace AdmissionsCommittee.Models
+namespace AdmissionsCommittee.Models.DTO
 {
-    public class Enrollee : BaseModel
+    public class EnrolleeDTO : BaseModel
     {
         private string name;
         private string surname;
@@ -26,11 +26,13 @@ namespace AdmissionsCommittee.Models
         private bool isBudget;
         private bool isEnlisted;
 
-        public Enrollee() { }
-        public Enrollee(string name, string surname, string patronymic,
-                        string gender, DateOnly dateOfBirth, string snils,
-                        DateOnly yearOfAdmission) 
+        public EnrolleeDTO(int id, string name, string surname, string patronymic,
+                           string gender, DateOnly dateOfBirth, string snils,
+                           DateOnly yearOfAdmission, PlaceOfResidence placeOfResidence = null, 
+                           Citizenship citizenship = null, District district = null, Education education = null, 
+                           Disability disability = null,  Certificate certificate = null, Ward ward = null)
         {
+            Id = id;
             Name = name;
             Surname = surname;
             Patronymic = patronymic;
@@ -38,12 +40,21 @@ namespace AdmissionsCommittee.Models
             DateOfBirth = dateOfBirth;
             Snils = snils;
             YearOfAdmission = yearOfAdmission;
+            Education = education;
+            Disability = disability;
+            Certificate = certificate;
+            Ward = ward;
+            Citizenship = citizenship;
+            PlaceOfResidence = placeOfResidence;
+            District = district;
         }
 
-        public string Name 
-        { 
-            get { return name; } 
-            set { Set(ref name, value); } 
+        public EnrolleeDTO() { }
+
+        public string Name
+        {
+            get { return name; }
+            set { Set(ref name, value); }
         }
 
         public string Surname
@@ -73,7 +84,7 @@ namespace AdmissionsCommittee.Models
         public string Snils
         {
             get { return snils; }
-            set{ Set(ref snils, value); }
+            set { Set(ref snils, value); }
         }
 
         public int Age
@@ -87,7 +98,7 @@ namespace AdmissionsCommittee.Models
             get { return yearOfAdmission; }
             set { Set(ref yearOfAdmission, value); }
         }
-        
+
         public Education Education
         {
             get { return education; }
@@ -121,13 +132,13 @@ namespace AdmissionsCommittee.Models
         public Citizenship Citizenship
         {
             get { return citizenship; }
-            set 
+            set
             {
-                if (value.Country != "Российская Федерация")
+                if (value != null && value.Country != "Российская Федерация")
                 {
                     PlaceOfResidence = DataBaseConnection.ApplicationContext.PlaceOfResidence.ToList().Find(district => district.Name == "Иностранный гражданин");
                 }
-                Set(ref citizenship, value); 
+                Set(ref citizenship, value);
             }
         }
 
@@ -136,11 +147,11 @@ namespace AdmissionsCommittee.Models
             get { return placeOfResidence; }
             set
             {
-                if (value.Name != "Костромская область") 
+                if (value != null && value.Name != "Костромская область")
                 {
                     District = DataBaseConnection.ApplicationContext.District.ToList().Find(district => district.Name == "За пределами Костромской области");
                 }
-                Set(ref placeOfResidence, value); 
+                Set(ref placeOfResidence, value);
             }
         }
 

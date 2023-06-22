@@ -63,12 +63,54 @@
                 <DataGridComboBoxColumn Header="Специальность"
                                         Width="*"
                                         ItemsSource="{Binding Source={StaticResource Specialities}}"
-                                        SelectedItemBinding="{Binding Speciality}"
-                                        DisplayMemberPath="Name"/>
+                                        SelectedItemBinding="{Binding Speciality, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat=" {0} - {1}">
+                                                        <Binding Path="Name"/>
+                                                        <Binding Path="DivisionСode"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding StringFormat=" {0} - {1}">
+                                                        <Binding Path="Name"/>
+                                                        <Binding Path="DivisionСode"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
+
+                </DataGridComboBoxColumn>
 
                 <DataGridCheckBoxColumn Header="Бюджет"
                                         MinWidth="120"
-                                        Binding="{Binding IsBudget}">
+                                        Binding="{Binding IsBudget, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridCheckBoxColumn.EditingElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -85,7 +127,7 @@
                 
                 <DataGridCheckBoxColumn Header="Зачислен"
                                         MinWidth="120"
-                                        Binding="{Binding IsEnlisted}">
+                                        Binding="{Binding IsEnlisted, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridCheckBoxColumn.EditingElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -99,6 +141,22 @@
                         </Style>
                     </DataGridCheckBoxColumn.ElementStyle>
                 </DataGridCheckBoxColumn>
+
+                <DataGridTextColumn Header="Дата поступления"
+                                    Binding="{Binding YearOfAdmission}"
+                                    Width="*">
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="IsEnabled" Value="False"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsEnlisted}" Value="true">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+
             </DataGrid.Columns>
         </DataGrid>
 

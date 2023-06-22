@@ -43,21 +43,25 @@
                                         HeaderTemplate="{StaticResource DataGridColumnHeaderCheckBoxTemplate}"
                                         ElementStyle="{StaticResource DataGridSelectionCheckBoxStyle}"
                                         EditingElementStyle="{StaticResource DataGridSelectionCheckBoxStyle}"/>
+
+                <DataGridTextColumn Header="Фамилия"
+                                    MinWidth="120"
+                                    Binding="{Binding Surname, UpdateSourceTrigger=PropertyChanged}"
+                                    Width="*"/>
                 
                 <DataGridTextColumn Header="Имя"
-                                    Binding="{Binding Name}"
+                                    MinWidth="90"
+                                    Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                     Width="*"/>
-                
-                <DataGridTextColumn Header="Фамилия"
-                                    Binding="{Binding Surname}"
-                                    Width="*"/>
-                
+
                 <DataGridTextColumn Header="Отчество"
-                                    Binding="{Binding Patronymic}"
+                                    MinWidth="120"
+                                    Binding="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}"
                                     Width="*"/>
                 
                 <DataGridComboBoxColumn Header="Пол"
-                                        SelectedValueBinding="{Binding Gender}">
+                                        MinWidth="60"
+                                        SelectedValueBinding="{Binding Gender, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
                             <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -72,14 +76,12 @@
                 </DataGridComboBoxColumn>
                 
                 <DataGridTextColumn Header="Дата рождения"
-                                    Binding="{Binding DateOfBirth}"/>
-                
-                <DataGridTextColumn Header="СНИЛС"
-                                    Binding="{Binding Snils}"/>
+                                    MinWidth="200"
+                                    Binding="{Binding DateOfBirth, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <DataGridTextColumn Header="Дата поступления"
-                                    Binding="{Binding YearOfAdmission}"
-                                    Width="*"/>
+                <DataGridTextColumn Header="СНИЛС"
+                                    MinWidth="160"
+                                    Binding="{Binding Snils, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
         

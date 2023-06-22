@@ -5,7 +5,7 @@ namespace AdmissionsCommittee.Models
     public class Speciality : BaseModel
     {
         private string name;
-        private string? description;
+        private string? divisionСode;
         private List<Enrollee> enrollees;
 
         public Speciality() { }
@@ -16,10 +16,10 @@ namespace AdmissionsCommittee.Models
             set { Set(ref name, value); }
         }
 
-        public string? Description
+        public string? DivisionСode
         {
-            get { return description; }
-            set { Set(ref description, value); }
+            get { return divisionСode; }
+            set { Set(ref divisionСode, value); }
         }
 
         public List<Enrollee> Enrollees

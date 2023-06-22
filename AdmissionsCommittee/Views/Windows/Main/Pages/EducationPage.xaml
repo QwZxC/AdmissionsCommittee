@@ -63,7 +63,7 @@
                 <DataGridComboBoxColumn Header="Образование"
                                         Width="*"
                                         ItemsSource="{Binding Source={StaticResource Educations}}"
-                                        SelectedItemBinding="{Binding Education}"
+                                        SelectedItemBinding="{Binding Education, UpdateSourceTrigger=PropertyChanged}"
                                         DisplayMemberPath="DisplayName"/>
             </DataGrid.Columns>
         </DataGrid>
@@ -78,6 +78,7 @@
                     Style="{StaticResource panelButton}"/>
 
             <Button Content="Coхранить"
+                    Command="{Binding SaveCommand}"
                     Style="{StaticResource panelButton}"/>
 
             <Button Content="Далее"

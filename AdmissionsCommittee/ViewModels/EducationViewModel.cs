@@ -1,6 +1,7 @@
 ﻿using AdmissionsCommittee.Commands;
 using AdmissionsCommittee.Infrastructure;
 using AdmissionsCommittee.Models;
+using AdmissionsCommittee.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.ObjectModel;
@@ -12,14 +13,17 @@ namespace AdmissionsCommittee.ViewModels
 {
     public class EducationViewModel : NotifyPropertyChangedObject
     {
-        private ObservableCollection<Education> educations;
-        private ObservableCollection<Education> selectedEducations;
+        private ObservableCollection<EducationDTO> educations;
+        private ObservableCollection<EducationDTO> selectedEducations;
         private bool isAllSelected;
 
         public EducationViewModel()
         {
-            SelectedEducations = new ObservableCollection<Education>();
-            Educations = new ObservableCollection<Education>(DataBaseConnection.ApplicationContext.Education);
+            SelectedEducations = new ObservableCollection<EducationDTO>();
+            Educations = new ObservableCollection<EducationDTO>(DataBaseConnection.ApplicationContext.Education.ToList().ConvertAll(education =>
+            {
+                return new EducationDTO(education.Id, education.After11School, education.After9School, education.AdditionalEducation);
+            }));
             Educations.CollectionChanged += IsAllSelectedCheck;
             SelectedEducations.CollectionChanged += SelectedCollectionChanged;
             SelectedEducations.CollectionChanged += IsAllSelectedCheck;
@@ -30,13 +34,13 @@ namespace AdmissionsCommittee.ViewModels
             ChangeAllSelectionCommand = new LambdaCommand(OnChangeAllSelectionCommandExecuted, CanChangeAllSelectionCommandExecute);
         }
 
-        public ObservableCollection<Education> Educations
+        public ObservableCollection<EducationDTO> Educations
         {
             get { return educations; }
             set { Set(ref educations, value); }
         }
 
-        public ObservableCollection<Education> SelectedEducations
+        public ObservableCollection<EducationDTO> SelectedEducations
         {
             get { return selectedEducations; }
             set { Set(ref selectedEducations, value); }
@@ -47,6 +51,8 @@ namespace AdmissionsCommittee.ViewModels
             get { return isAllSelected; }
             set { Set(ref isAllSelected, value); }        
         }
+
+        public bool IsChanged { get; set; }
 
         #region Commands
 
@@ -61,7 +67,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public void OnAddCommandExecuted(object parameter)
         {
-            Educations.Add(new Education());
+            Educations.Add(new EducationDTO());
         }
 
         #endregion
@@ -89,17 +95,24 @@ namespace AdmissionsCommittee.ViewModels
 
         public bool CanSaveCommandExecute(object parameter)
         {
-            return Educations.Any();
+            return IsAllValid() && !IsAllSaved();
         }
 
         public void OnSaveCommandExecuted(object parameter)
         {
-            DbSet<Education> dbEducation = DataBaseConnection.ApplicationContext.Education;
-            Educations.ToList().ForEach(enrollees =>
+            DbSet<Education> dbEducations = DataBaseConnection.ApplicationContext.Education;
+            Educations.ToList().ForEach(education =>
             {
-                if (!dbEducation.Contains(enrollees))
+                if (education.Id == 0)
                 {
-                    dbEducation.Add(enrollees);
+                    dbEducations.Add(new Education(education.After11School, education.After9School, education.AdditionalEducation));
+                }
+                else
+                {
+                    Education dbEducation = dbEducations.Find(education.Id);
+                    dbEducation.After9School = education.After9School;
+                    dbEducation.After11School = education.After11School;
+                    dbEducation.AdditionalEducation = education.AdditionalEducation;
                 }
             });
             DataBaseConnection.ApplicationContext.SaveChanges();
@@ -137,16 +150,53 @@ namespace AdmissionsCommittee.ViewModels
 
         private void OnChangeItemSelectionCommandExecuted(object parameter)
         {
-            Education education = parameter as Education;
+            EducationDTO education = parameter as EducationDTO;
             if (education.IsSelected)
+            {
                 SelectedEducations.Add(education);
+            }
             else
+            {
                 SelectedEducations.Remove(education);
+            }
         }
 
         #endregion
 
         #endregion
+
+        private bool IsAllSaved()
+        {
+            return IsChanged = CheckIsSaved();
+        }
+
+        private bool CheckIsSaved()
+        {
+            DbSet<Education> dbEducations = DataBaseConnection.ApplicationContext.Education;
+            if (Educations.Count != dbEducations.Count())
+            {
+                return false;
+            }
+            return Educations.All(education =>
+            {
+                Education dbEducation = dbEducations.Find(education.Id);
+                if (dbEducation != null)
+                {
+                    return education.After11School == dbEducation.After11School &&
+                           education.After9School == dbEducation.After9School &&
+                           education.AdditionalEducation == dbEducation.AdditionalEducation;
+                }
+                return true;
+            });
+        }
+
+        private bool IsAllValid()
+        {
+            return Educations.All(education => education.After11School || 
+                                               education.After9School ||
+                                               !string.IsNullOrWhiteSpace(education.AdditionalEducation));
+        }
+
 
         private void IsAllSelectedCheck(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -168,11 +218,11 @@ namespace AdmissionsCommittee.ViewModels
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (Education education in e.NewItems)
+                    foreach (EducationDTO education in e.NewItems)
                         education.IsSelected = true;
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (Education education in e.OldItems)
+                    foreach (EducationDTO education in e.OldItems)
                         education.IsSelected = false;
                     break;
             }

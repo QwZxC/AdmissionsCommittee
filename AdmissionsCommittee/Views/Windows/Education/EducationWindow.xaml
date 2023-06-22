@@ -25,7 +25,7 @@
 
         <Label Grid.Row="0"
                HorizontalContentAlignment="Center"
-               Content="Регистрация абитуриентов"
+               Content="Образование"
                Grid.ColumnSpan="2"
                FontFamily="Courier New"
                FontSize="30"/>
@@ -43,8 +43,7 @@
                                         EditingElementStyle="{StaticResource DataGridSelectionCheckBoxStyle}"/>
 
                 <DataGridCheckBoxColumn Header="После 9-го класса"
-                                        Binding="{Binding After9School, UpdateSourceTrigger=PropertyChanged}"
-                                        Width="*">
+                                        Binding="{Binding After9School, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridCheckBoxColumn.EditingElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="IsEnabled" Value="False"/>
@@ -73,8 +72,7 @@
                 </DataGridCheckBoxColumn>
                 
                 <DataGridCheckBoxColumn Header="После 11-го класса"
-                                        Binding="{Binding After11School, UpdateSourceTrigger=PropertyChanged}"
-                                        Width="*">
+                                        Binding="{Binding After11School, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridCheckBoxColumn.EditingElementStyle>
                         <Style TargetType="CheckBox">
                             <Setter Property="IsEnabled" Value="False"/>
@@ -102,7 +100,7 @@
                 </DataGridCheckBoxColumn>
 
                 <DataGridTextColumn Header="Другое"
-                                    Binding="{Binding AdditionalEducation}"
+                                    Binding="{Binding AdditionalEducation, UpdateSourceTrigger=PropertyChanged}"
                                     Width="*">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">

@@ -25,7 +25,7 @@
 
         <Label Grid.Row="0"
                HorizontalContentAlignment="Center"
-               Content="Регистрация абитуриентов"
+               Content="Специальности"
                Grid.ColumnSpan="2"
                FontFamily="Courier New"
                FontSize="30"/>
@@ -43,11 +43,12 @@
                                         EditingElementStyle="{StaticResource DataGridSelectionCheckBoxStyle}"/>
 
                 <DataGridTextColumn Header="Название"
-                                    Binding="{Binding Name}"/>
-
-                <DataGridTextColumn Header="Описание"
                                     Width="*"
-                                    Binding="{Binding Description}"/>
+                                    Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <DataGridTextColumn Header="Код подразделения"
+                                    Width="*"
+                                    Binding="{Binding DivisionСode, UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
 

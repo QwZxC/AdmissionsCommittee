@@ -9,11 +9,15 @@ namespace AdmissionsCommittee.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
+            {
                 return null;
+            }
             string s = value.ToString();
             int prefixLength;
             if (!int.TryParse(parameter.ToString(), out prefixLength) || s.Length <= prefixLength)
+            {
                 return s;
+            }
 
             return $"{s.Substring(0, prefixLength)}.";
         }

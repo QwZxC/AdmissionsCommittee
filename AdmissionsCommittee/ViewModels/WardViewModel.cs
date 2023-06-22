@@ -69,7 +69,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public bool CanSaveCommandExecute(object parameter)
         {
-            return Wards.Any();
+            return IsAllValid();
         }
 
         public void OnSaveCommandExecuted(object parameter)
@@ -132,6 +132,11 @@ namespace AdmissionsCommittee.ViewModels
         }
 
         #endregion
+
+        private bool IsAllValid()
+        {
+            return Enrollees.All(enrollee => enrollee.Ward?.Document != null);
+        }
 
         private void LoadData()
         {

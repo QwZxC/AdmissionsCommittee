@@ -2,6 +2,7 @@
 using AdmissionsCommittee.Infrastructure;
 using AdmissionsCommittee.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -47,6 +48,8 @@ namespace AdmissionsCommittee.ViewModels
             set { Set(ref isAllSelected, value); }
         }
 
+        public bool IsChanged { get; set; }
+
         #region Commands
 
         #region AddCommand
@@ -88,7 +91,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public bool CanSaveCommandExecute(object parameter)
         {
-            return Specialities.Any();
+            return IsAllValid() && !IsAllSaved();
         }
 
         public void OnSaveCommandExecuted(object parameter)
@@ -146,6 +149,36 @@ namespace AdmissionsCommittee.ViewModels
         #endregion
 
         #endregion
+
+        private bool IsAllSaved()
+        {
+            return IsChanged = CheckIsSaved();
+        }
+
+        private bool CheckIsSaved()
+        {
+            DbSet<Speciality> dbSpecialities = DataBaseConnection.ApplicationContext.Speciality;
+            if (Specialities.Count != dbSpecialities.Count())
+            {
+                return false;
+            }
+            return Specialities.All(speciality =>
+            {
+                Speciality dbSpeciality = dbSpecialities.Find(speciality.Id);
+                if (dbSpeciality != null)
+                {
+                    return speciality.Name == dbSpeciality.Name &&
+                           speciality.DivisionСode == dbSpeciality.DivisionСode;
+                }
+                return true;
+            });
+        }
+
+        private bool IsAllValid()
+        {
+            return Specialities.All(enrollee => !string.IsNullOrWhiteSpace(enrollee.Name) &&
+                                             !string.IsNullOrWhiteSpace(enrollee.DivisionСode));
+        }
 
         private void IsAllSelectedCheck(object sender, NotifyCollectionChangedEventArgs e)
         {

@@ -3,7 +3,6 @@ using AdmissionsCommittee.Infrastructure;
 using AdmissionsCommittee.Models;
 using AdmissionsCommittee.Types;
 using AdmissionsCommittee.Views.Windows.Speciality;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -36,11 +35,11 @@ namespace AdmissionsCommittee.ViewModels
             return true;
         }
 
-        private async void OnOpenSpecialityWindowCommandExecuted(object parameter)
+        private void OnOpenSpecialityWindowCommandExecuted(object parameter)
         {
             SpecialityWindow specialityWindow = new SpecialityWindow();
             specialityWindow.ShowDialog();
-            await DataBaseConnection.ApplicationContext.Speciality.ForEachAsync(speciality =>
+            DataBaseConnection.ApplicationContext.Speciality.ToList().ForEach(speciality =>
             {
                 if (!Specialities.Contains(speciality))
                 {

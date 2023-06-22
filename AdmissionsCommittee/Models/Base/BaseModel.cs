@@ -20,5 +20,8 @@ namespace AdmissionsCommittee.Models.Base
             get { return isSelected; }
             set { Set(ref isSelected, value); }
         }
+        
+        [NotMapped]
+        public bool IsValid { get; set; }
     }
 }

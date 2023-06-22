@@ -1,8 +1,11 @@
 ﻿using AdmissionsCommittee.Commands;
 using AdmissionsCommittee.Infrastructure;
 using AdmissionsCommittee.Models;
+using AdmissionsCommittee.Models.Context;
+using AdmissionsCommittee.Models.DTO;
 using AdmissionsCommittee.Types;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -14,23 +17,33 @@ namespace AdmissionsCommittee.ViewModels
     {
         public SelectCitizenshipViewModel()
         {
-            Enrollees = DataBaseConnection.ApplicationContext.Enrollee.ToList();
-            PlaceOfResidences = DataBaseConnection.ApplicationContext.PlaceOfResidence.ToList();
-            Districts = DataBaseConnection.ApplicationContext.District.ToList();
-            Citizenships = new ObservableCollection<Citizenship>();
-            DataBaseConnection.ApplicationContext.Citizenship.ToList().ForEach(Citizenships.Add);
+            ApplicationContext db = DataBaseConnection.ApplicationContext;
+            PlaceOfResidences = db.PlaceOfResidence.ToList();
+            Citizenships = db.Citizenship.ToList();
+            Districts = db.District.ToList();
+            Enrollees = db.Enrollee.ToList().ConvertAll(enrollee =>
+            {
+                return new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
+                                       enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
+                                       enrollee.Snils, enrollee.YearOfAdmission,
+                                       db.PlaceOfResidence.Find(enrollee.PlaceOfResidenceId),
+                                       db.Citizenship.Find(enrollee.CitizenshipId),
+                                       db.District.Find(enrollee.DistrictId));
+            });
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             GoToPlaceOfResidencePageCommand = new LambdaCommand(OnGoToPlaceOfResidencePageCommandExecuted, CanGoToPlaceOfResidencePageCommandExecute);
             GoToRegistrationEnrollePageCommand = new LambdaCommand(OnGoToRegistrationEnrollePageCommandExecuted, CanGoToRegistrationEnrollePageCommandExecute);
         }
 
-        public ObservableCollection<Citizenship> Citizenships { get; set; }
+        public List<Citizenship> Citizenships { get; set; }
         
-        public List<Enrollee> Enrollees { get; set; }
+        public List<EnrolleeDTO> Enrollees { get; set; }
 
         public List<PlaceOfResidence> PlaceOfResidences { get; set; }
 
         public List<District> Districts { get; set; }
+
+        public bool IsChanged { get; set; }
 
         #region GoToPlaceOfResidencePageCommand
 
@@ -70,7 +83,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public bool CanSaveCommandExecute(object parameter)
         {
-            return Enrollees.All(enrollee => enrollee.Citizenship != null);
+            return IsAllValid() && !IsAllSaved();
         }
 
         public void OnSaveCommandExecuted(object parameter)
@@ -79,5 +92,28 @@ namespace AdmissionsCommittee.ViewModels
         }
 
         #endregion
+
+        private bool IsAllValid()
+        {
+            return Enrollees.All(enrollee => enrollee.Citizenship != null &&
+                                             enrollee.PlaceOfResidence != null &&
+                                             enrollee.District != null);
+        }
+        private bool IsAllSaved()
+        {
+            return IsChanged = CheckIsSaved();
+        }
+
+        private bool CheckIsSaved()
+        {
+            DbSet<Enrollee> dbEnrollees = DataBaseConnection.ApplicationContext.Enrollee;
+            return Enrollees.All(enrollee =>
+            {
+                Enrollee dbEnrollee = dbEnrollees.Find(enrollee.Id);
+                return enrollee.Citizenship == dbEnrollee.Citizenship &&
+                       enrollee.PlaceOfResidence == dbEnrollee.PlaceOfResidence &&
+                       enrollee.District == dbEnrollee.District;
+            });
+        }
     }
 }

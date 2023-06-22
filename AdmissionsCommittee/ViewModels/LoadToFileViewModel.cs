@@ -29,7 +29,6 @@ namespace AdmissionsCommittee.ViewModels
 
         public ExcelGenerator ExcelGenerator { get; set; } 
 
-
         #region GoToWardPageCommand
 
         public ICommand GoToWardPageCommand { get; set; }
@@ -57,7 +56,8 @@ namespace AdmissionsCommittee.ViewModels
 
         private void OnLoadToExcelCommandexecuted(object parameter)
         {
-            byte[] ExelReport = ExcelGenerator.Generate(EnrolleeReport);
+            MessageBox.Show("Идёт выгрузка, пожалуйста подождите");
+            var ExelReport = ExcelGenerator.Generate(EnrolleeReport);
             try
             {
                 File.WriteAllBytes("../../../Reports/Files/Приёмная коммисия.xlsx", ExelReport);

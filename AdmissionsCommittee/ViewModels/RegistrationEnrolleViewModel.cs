@@ -1,24 +1,33 @@
 ﻿using AdmissionsCommittee.Commands;
 using AdmissionsCommittee.Infrastructure;
 using AdmissionsCommittee.Models;
-using AdmissionsCommittee.Models.Context;
+using AdmissionsCommittee.Models.DTO;
 using AdmissionsCommittee.Types;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace AdmissionsCommittee.ViewModels
 {
     public class RegistrationEnrolleViewModel : NotifyPropertyChangedObject
     {
-        private ObservableCollection<Enrollee> enrollees;
+        private ObservableCollection<EnrolleeDTO> enrollees;
         private bool isAllSelected;
         public RegistrationEnrolleViewModel()
         {
-            Enrollees = new ObservableCollection<Enrollee>(DataBaseConnection.ApplicationContext.Enrollee);
-            SelectedEnrolle = new ObservableCollection<Enrollee>();
+            Enrollees = new ObservableCollection<EnrolleeDTO>(DataBaseConnection.ApplicationContext.Enrollee.ToList().ConvertAll(enrollee =>
+            {
+                return new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
+                                       enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
+                                       enrollee.Snils, enrollee.YearOfAdmission);
+            }));
+            SelectedEnrolle = new ObservableCollection<EnrolleeDTO>();
+            RemovedEnrolle = new List<Enrollee>();
             Enrollees.CollectionChanged += IsAllSelectedCheck;
             SelectedEnrolle.CollectionChanged += SelectedCollectionChanged;
             SelectedEnrolle.CollectionChanged += IsAllSelectedCheck;
@@ -30,19 +39,22 @@ namespace AdmissionsCommittee.ViewModels
             ChangeAllSelectionCommand = new LambdaCommand(OnChangeAllSelectionCommandExecuted, CanChangeAllSelectionCommandExecute);
         }
 
-        public ObservableCollection<Enrollee> Enrollees
+        public ObservableCollection<EnrolleeDTO> Enrollees
         {
             get { return enrollees; }
             set { Set(ref enrollees, value); }
         }
 
-        public ObservableCollection<Enrollee> SelectedEnrolle { get; set; }
+        public ObservableCollection<EnrolleeDTO> SelectedEnrolle { get; set; }
+        public List<Enrollee> RemovedEnrolle { get; set; }
 
         public bool IsAllSelected 
         {
             get { return isAllSelected; }
             set { Set(ref isAllSelected, value); } 
         }
+
+        public bool IsChanged { get; set; }
 
         #region Commands
 
@@ -57,7 +69,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public void OnAddCommandExecuted(object parameter)
         {
-            Enrollees.Add(new Enrollee());
+            Enrollees.Add(new EnrolleeDTO());
         }
 
         #endregion
@@ -74,13 +86,15 @@ namespace AdmissionsCommittee.ViewModels
         public void OnRemoveCommandExecuted(object parameter)
         {
             SelectedEnrolle.ToList().ForEach(enrolee => Enrollees.Remove(enrolee));
-            ApplicationContext db = DataBaseConnection.ApplicationContext;
-            SelectedEnrolle.ToList().ForEach(enrolee => 
+            DbSet<Enrollee> dbEnroleee = DataBaseConnection.ApplicationContext.Enrollee;
+            SelectedEnrolle.ToList().ForEach(enrollee => 
             {
-                db.Ward.FromSqlRaw("DELETE FROM public.\"Ward\"\r\n\tWHERE \"Id\" =?;", enrolee.Ward.Id);
-                db.Certificate.FromSqlRaw("DELETE FROM public.\"Ward\"\r\n\tWHERE \"Id\" =?;", enrolee.Certificate.Id);
-                db.Disability.FromSqlRaw("DELETE FROM public.\"Ward\"\r\n\tWHERE \"Id\" =?;", enrolee.Disability.Id);
-                db.Enrollee.Remove(enrolee);
+                Enrollee dbEnrollee = dbEnroleee.Find(enrollee.Id);
+                if (dbEnrollee != null)
+                {
+                    RemovedEnrolle.Add(dbEnrollee);
+                    IsChanged = false;
+                }
             });
             SelectedEnrolle.Clear();
         }
@@ -93,17 +107,31 @@ namespace AdmissionsCommittee.ViewModels
 
         public bool CanSaveCommandExecute(object parameter)
         {
-            return Enrollees.Any();
+            return IsAllValid() && !IsAllSaved();
         }
 
         public void OnSaveCommandExecuted(object parameter)
         {
-            DbSet<Enrollee> dbEnrolle = DataBaseConnection.ApplicationContext.Enrollee;
-            Enrollees.ToList().ForEach(enrollees =>
+            DbSet<Enrollee> dbEnrollees = DataBaseConnection.ApplicationContext.Enrollee;
+            RemovedEnrolle.ForEach(enrollee => dbEnrollees.Remove(enrollee));
+            Enrollees.ToList().ForEach(enrollee =>
             {
-                if (!dbEnrolle.Contains(enrollees))
+                if (enrollee.Id == 0)
                 {
-                    dbEnrolle.Add(enrollees);
+                    dbEnrollees.Add(new Enrollee(enrollee.Name, enrollee.Surname, enrollee.Patronymic,
+                                                enrollee.Gender, enrollee.DateOfBirth, enrollee.Snils,
+                                                enrollee.YearOfAdmission));
+                }
+                else
+                {
+                    Enrollee dbEnrollee = dbEnrollees.Find(enrollee.Id);
+                    dbEnrollee.Name = enrollee.Name;
+                    dbEnrollee.Surname = enrollee.Surname;
+                    dbEnrollee.Patronymic = enrollee.Patronymic;
+                    dbEnrollee.Gender = enrollee.Gender;
+                    dbEnrollee.DateOfBirth = enrollee.DateOfBirth;
+                    dbEnrollee.Snils = enrollee.Snils;
+                    dbEnrollee.YearOfAdmission = enrollee.YearOfAdmission;
                 }
             });
             DataBaseConnection.ApplicationContext.SaveChanges();
@@ -117,11 +145,15 @@ namespace AdmissionsCommittee.ViewModels
 
         public bool CanGoToSelectCitizenshipCommandExecute(object parameter)
         {
-            return true;
+            return Enrollees.Any() && IsAllValid();
         }
 
         public void OnGoToSelectCitizenshipCommandExecuted(object parameter)
         {
+            if (!IsChanged && MessageBox.Show("Вы не сохранили изменения.", "Вы действительно хотите продолжить?", MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+            {
+                return;
+            }
             MainViewModel.SwitchPage(MainPageType.SelectCitizenshipPage);
         }
 
@@ -138,7 +170,7 @@ namespace AdmissionsCommittee.ViewModels
 
         private void OnChangeItemSelectionCommandExecuted(object parameter)
         {
-            Enrollee enrollee = parameter as Enrollee;
+            EnrolleeDTO enrollee = parameter as EnrolleeDTO;
             if (enrollee.IsSelected)
                 SelectedEnrolle.Add(enrollee);
             else
@@ -166,8 +198,44 @@ namespace AdmissionsCommittee.ViewModels
 
         #endregion
 
-
         #endregion
+
+        private bool IsAllSaved()
+        {
+            return IsChanged = CheckIsSaved();
+        }
+
+        private bool CheckIsSaved()
+        {
+            DbSet<Enrollee> dbEnrollees = DataBaseConnection.ApplicationContext.Enrollee;
+            if (Enrollees.Count != dbEnrollees.Count())
+            {
+                return false;
+            }
+            return Enrollees.All(enrollee =>
+            {
+                Enrollee dbEnrollee = dbEnrollees.Find(enrollee.Id);
+                if (dbEnrollee != null)
+                {
+                    return enrollee.Name == dbEnrollee.Name &&
+                           enrollee.Surname == dbEnrollee.Surname &&
+                           enrollee.Patronymic == dbEnrollee.Patronymic &&
+                           enrollee.Gender == dbEnrollee.Gender &&
+                           enrollee.DateOfBirth == dbEnrollee.DateOfBirth &&
+                           enrollee.Snils == dbEnrollee.Snils;
+                }
+                return true;
+            });
+        }
+
+        private bool IsAllValid()
+        {
+            return Enrollees.All(enrollee => !string.IsNullOrWhiteSpace(enrollee.Name) &&
+                                             !string.IsNullOrWhiteSpace(enrollee.Surname) &&
+                                             enrollee.DateOfBirth > DateOnly.MinValue &&
+                                             !string.IsNullOrWhiteSpace(enrollee.Snils) &&
+                                             !string.IsNullOrWhiteSpace(enrollee.Gender));
+        }
 
         private void IsAllSelectedCheck(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -189,11 +257,11 @@ namespace AdmissionsCommittee.ViewModels
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (Enrollee item in e.NewItems)
+                    foreach (EnrolleeDTO item in e.NewItems)
                         item.IsSelected = true;
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (Enrollee item in e.OldItems)
+                    foreach (EnrolleeDTO item in e.OldItems)
                         item.IsSelected = false;
                     break;
             }

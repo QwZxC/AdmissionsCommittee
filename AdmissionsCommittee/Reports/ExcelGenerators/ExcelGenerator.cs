@@ -39,7 +39,7 @@ namespace AdmissionsCommittee.Reports.ExcelGenerators
             
             report.Enrollees.ForEach(enrollee =>
             {
-                int index = report.Enrollees.FindIndex(e => enrollee.Id == e.Id) + 3;
+                int index = report.Enrollees.IndexOf(enrollee) + 3;
                 sheet.Cells[index, 1].Value = enrollee.Name;
                 sheet.Cells[index, 2].Value = enrollee.Surname;
                 sheet.Cells[index, 3].Value = enrollee.Patronymic;

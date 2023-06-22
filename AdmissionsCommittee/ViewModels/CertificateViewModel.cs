@@ -1,6 +1,7 @@
 ﻿using AdmissionsCommittee.Commands;
 using AdmissionsCommittee.Infrastructure;
 using AdmissionsCommittee.Models;
+using AdmissionsCommittee.Models.DTO;
 using AdmissionsCommittee.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
@@ -17,8 +18,7 @@ namespace AdmissionsCommittee.ViewModels
     {
         public CertificateViewModel()
         {
-            Enrollees = DataBaseConnection.ApplicationContext.Enrollee.ToList();
-            Certificates = new ObservableCollection<Certificate>();
+            Certificates = new ObservableCollection<Certificate>(DataBaseConnection.ApplicationContext.Certificate);
             GoToSpecialityPageCommand = new LambdaCommand(OnDisabilityPageCommandExecuted, CanDisabilityPageCommandExecute);
             GoToEducationPageCommand = new LambdaCommand(OnGoToEducationPageCommandExecuted, CanGoToEducationPageExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
@@ -27,9 +27,11 @@ namespace AdmissionsCommittee.ViewModels
             LoadData();
         }
 
-        public List<Enrollee> Enrollees { get; set; }
+        public List<EnrolleeDTO> Enrollees { get; set; }
 
         public ObservableCollection<Certificate> Certificates { get; set; }
+
+        public bool IsChanged { get; set; }
 
         #region GoToPlaceOfResidencePageCommand
 
@@ -69,20 +71,27 @@ namespace AdmissionsCommittee.ViewModels
 
         public bool CanSaveCommandExecute(object parameter)
         {
-            return Certificates.Any();
+            return IsAllValid();
         }
 
         public void OnSaveCommandExecuted(object parameter)
         {
-            DbSet<Certificate> dbCertificates = DataBaseConnection.ApplicationContext.Certificate;
-            Certificates.ToList().ForEach(enrollees =>
+            DbSet<Enrollee> dbEnrollees = DataBaseConnection.ApplicationContext.Enrollee;
+            Enrollees.ForEach(enrollee =>
             {
-                if (!dbCertificates.Contains(enrollees))
+                dbEnrollees.Find(enrollee.Id).Certificate = enrollee.Certificate;
+            });
+
+            DbSet<Certificate> dbCertificates = DataBaseConnection.ApplicationContext.Certificate;
+            Certificates.ToList().ForEach(certificate =>
+            {
+                if (!dbCertificates.Contains(certificate))
                 {
-                    dbCertificates.Add(enrollees);
+                    dbCertificates.Add(certificate);
                 }
             });
             DataBaseConnection.ApplicationContext.SaveChanges();
+            
         }
 
         #endregion
@@ -133,19 +142,29 @@ namespace AdmissionsCommittee.ViewModels
 
         #endregion
 
+        private bool IsAllValid()
+        {
+            return Enrollees.All(enrollee => enrollee.Certificate?.AvarageScore > 0);
+        }
+
         private void LoadData()
         {
+            Enrollees = DataBaseConnection.ApplicationContext.Enrollee.ToList().ConvertAll(enrollee =>
+            {
+                return new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
+                                       enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
+                                       enrollee.Snils, enrollee.YearOfAdmission,
+                                       certificate: Certificates.ToList().Find(certificate => certificate.Id == enrollee.CertificateId));
+            });
+
             Enrollees.ForEach(enrollee =>
             {
-                enrollee.Certificate = DataBaseConnection.ApplicationContext.Certificate.ToList().Find(dbСertificate => dbСertificate.Id == enrollee.CertificateId);
-                if (enrollee.Certificate == null)
+                if(enrollee.Certificate == null)
                 {
                     enrollee.Certificate = new Certificate();
                     Certificates.Add(enrollee.Certificate);
-                    return;
                 }
-                Certificates.Add(enrollee.Certificate);
             });
-        }    
+        }
     }
 }
