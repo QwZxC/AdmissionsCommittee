@@ -1,5 +1,7 @@
 ﻿using AdmissionsCommittee.Models.Base;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace AdmissionsCommittee.Models
 {
     public class Speciality : BaseModel
@@ -9,6 +11,13 @@ namespace AdmissionsCommittee.Models
         private List<Enrollee> enrollees;
 
         public Speciality() { }
+
+        public Speciality(string name, string divisisonCode, List<Enrollee> enrollees = null)
+        {
+            Name = name;
+            DivisionСode = divisisonCode;
+            Enrollees = enrollees;
+        }
 
         public string Name 
         { 
@@ -20,6 +29,12 @@ namespace AdmissionsCommittee.Models
         {
             get { return divisionСode; }
             set { Set(ref divisionСode, value); }
+        }
+
+        [NotMapped]
+        public string DisplayName
+        {
+            get { return $"{Name} - {DivisionСode}"; }
         }
 
         public List<Enrollee> Enrollees

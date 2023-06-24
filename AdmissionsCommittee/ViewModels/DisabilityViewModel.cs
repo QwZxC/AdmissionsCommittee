@@ -21,7 +21,7 @@ namespace AdmissionsCommittee.ViewModels
             Enrollees = DataBaseConnection.ApplicationContext.Enrollee.ToList();
             Disabilities = new ObservableCollection<Disability>();
             GoToWardPageCommand = new LambdaCommand(OnGoToWardPageCommandExecuted, CanGoToWardPageCommandExecute);
-            GoToAvarageScoreSnilsPageCommand = new LambdaCommand(OnGoToAvarageScoreSnilsPageCommandExecuted, CanGoToAvarageScoreSnilsPageExecute);
+            GoToSpecialityPage = new LambdaCommand(OnGoToSpecialityPageExecuted, CanGoToSpecialityPageExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
             LoadImageCommand = new LambdaCommand(OnLoadImageCommandExecuted, CanLoadImageCommandExecute);
             RemoveImageCommand = new LambdaCommand(OnRemoveImageCommandExecuted, CanRemoveImageCommandExecute);
@@ -51,16 +51,16 @@ namespace AdmissionsCommittee.ViewModels
 
         #region GoToAvarageScoreSnilsPageCommand
 
-        public ICommand GoToAvarageScoreSnilsPageCommand { get; set; }
+        public ICommand GoToSpecialityPage { get; set; }
 
-        public bool CanGoToAvarageScoreSnilsPageExecute(object parameter)
+        public bool CanGoToSpecialityPageExecute(object parameter)
         {
             return true;
         }
 
-        public void OnGoToAvarageScoreSnilsPageCommandExecuted(object parameter)
+        public void OnGoToSpecialityPageExecuted(object parameter)
         {
-            MainViewModel.SwitchPage(MainPageType.CertificatePage);
+            MainViewModel.SwitchPage(MainPageType.SpecialityPage);
         }
 
         #endregion

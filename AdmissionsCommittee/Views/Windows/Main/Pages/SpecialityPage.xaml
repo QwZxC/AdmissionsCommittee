@@ -63,50 +63,8 @@
                 <DataGridComboBoxColumn Header="Специальность"
                                         Width="*"
                                         ItemsSource="{Binding Source={StaticResource Specialities}}"
-                                        SelectedItemBinding="{Binding Speciality, UpdateSourceTrigger=PropertyChanged}">
-                    <DataGridComboBoxColumn.EditingElementStyle>
-                        <Style TargetType="ComboBox">
-                            <Setter Property="ItemTemplate">
-                                <Setter.Value>
-                                    <DataTemplate>
-                                        <DockPanel>
-                                            <TextBlock>
-                                                <TextBlock.Text>
-                                                    <MultiBinding StringFormat=" {0} - {1}">
-                                                        <Binding Path="Name"/>
-                                                        <Binding Path="DivisionСode"/>
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DataGridComboBoxColumn.EditingElementStyle>
-
-                    <DataGridComboBoxColumn.ElementStyle>
-                        <Style TargetType="ComboBox">
-                            <Setter Property="ItemTemplate">
-                                <Setter.Value>
-                                    <DataTemplate>
-                                        <DockPanel>
-                                            <TextBlock>
-                                                <TextBlock.Text>
-                                                    <MultiBinding StringFormat=" {0} - {1}">
-                                                        <Binding Path="Name"/>
-                                                        <Binding Path="DivisionСode"/>
-                                                    </MultiBinding>
-                                                </TextBlock.Text>
-                                            </TextBlock>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DataGridComboBoxColumn.ElementStyle>
-
-                </DataGridComboBoxColumn>
+                                        SelectedItemBinding="{Binding Speciality, UpdateSourceTrigger=PropertyChanged}"
+                                        DisplayMemberPath="DisplayName"/>
 
                 <DataGridCheckBoxColumn Header="Бюджет"
                                         MinWidth="120"

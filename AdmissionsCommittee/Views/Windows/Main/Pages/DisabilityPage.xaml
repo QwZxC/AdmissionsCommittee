@@ -117,7 +117,7 @@
                     Style="{StaticResource panelButton}"/>
 
             <Button Content="Назад"
-                    Command="{Binding GoToAvarageScoreSnilsPageCommand}"
+                    Command="{Binding GoToSpecialityPage}"
                     Style="{StaticResource panelButton}"/>
 
         </DockPanel>

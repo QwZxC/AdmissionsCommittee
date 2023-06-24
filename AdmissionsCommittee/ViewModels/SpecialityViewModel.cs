@@ -1,8 +1,8 @@
 ﻿using AdmissionsCommittee.Commands;
 using AdmissionsCommittee.Infrastructure;
 using AdmissionsCommittee.Models;
+using AdmissionsCommittee.Models.DTO;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -12,14 +12,17 @@ namespace AdmissionsCommittee.ViewModels
 {
     public class SpecialityViewModel : NotifyPropertyChangedObject
     {
-        private ObservableCollection<Speciality> specialities;
-        private ObservableCollection<Speciality> selectedSpecialities;
+        private ObservableCollection<SpecialityDTO> specialities;
+        private ObservableCollection<SpecialityDTO> selectedSpecialities;
         private bool isAllSelected;
 
         public SpecialityViewModel() 
         {
-            Specialities = new ObservableCollection<Speciality>(DataBaseConnection.ApplicationContext.Speciality);
-            SelectedSpecialities = new ObservableCollection<Speciality>();
+            Specialities = new ObservableCollection<SpecialityDTO>(DataBaseConnection.ApplicationContext.Speciality.ToList().ConvertAll(speciality =>
+            {
+                return new SpecialityDTO(speciality.Id, speciality.Name, speciality.DivisionСode);
+            }));
+            SelectedSpecialities = new ObservableCollection<SpecialityDTO>();
             Specialities.CollectionChanged += IsAllSelectedCheck;
             SelectedSpecialities.CollectionChanged += SelectedCollectionChanged;
             SelectedSpecialities.CollectionChanged += IsAllSelectedCheck;
@@ -30,13 +33,13 @@ namespace AdmissionsCommittee.ViewModels
             ChangeAllSelectionCommand = new LambdaCommand(OnChangeAllSelectionCommandExecuted, CanChangeAllSelectionCommandExecute);
         }
 
-        public ObservableCollection<Speciality> Specialities 
+        public ObservableCollection<SpecialityDTO> Specialities 
         {
             get { return specialities; } 
             set { Set(ref specialities, value); }
         }
 
-        public ObservableCollection<Speciality> SelectedSpecialities
+        public ObservableCollection<SpecialityDTO> SelectedSpecialities
         {
             get { return selectedSpecialities; }
             set { Set(ref selectedSpecialities, value); }
@@ -63,7 +66,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public void OnAddCommandExecuted(object parameter)
         {
-            Specialities.Add(new Speciality());
+            Specialities.Add(new SpecialityDTO());
         }
 
         #endregion
@@ -99,9 +102,15 @@ namespace AdmissionsCommittee.ViewModels
             DbSet<Speciality> dbSpecialities = DataBaseConnection.ApplicationContext.Speciality;
             Specialities.ToList().ForEach(speciality =>
             {
-                if (!dbSpecialities.Contains(speciality))
+                Speciality dbSpeciality = dbSpecialities.Find(speciality.Id);
+                if (dbSpeciality == null)
                 {
-                    dbSpecialities.Add(speciality);
+                    dbSpecialities.Add(new Speciality(speciality.Name, speciality.DivisionСode));
+                }
+                else
+                {
+                    dbSpeciality.Name = speciality.Name;
+                    dbSpeciality.DivisionСode = speciality.DivisionСode;
                 }
             });
             DataBaseConnection.ApplicationContext.SaveChanges();
@@ -139,7 +148,7 @@ namespace AdmissionsCommittee.ViewModels
 
         private void OnChangeItemSelectionCommandExecuted(object parameter)
         {
-            Speciality speciality = parameter as Speciality;
+            SpecialityDTO speciality = parameter as SpecialityDTO;
             if (speciality.IsSelected)
                 SelectedSpecialities.Add(speciality);
             else
@@ -200,11 +209,11 @@ namespace AdmissionsCommittee.ViewModels
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (Speciality speciality in e.NewItems)
+                    foreach (SpecialityDTO speciality in e.NewItems)
                         speciality.IsSelected = true;
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (Speciality speciality in e.OldItems)
+                    foreach (SpecialityDTO speciality in e.OldItems)
                         speciality.IsSelected = false;
                     break;
             }

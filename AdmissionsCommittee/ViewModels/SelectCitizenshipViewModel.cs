@@ -88,6 +88,13 @@ namespace AdmissionsCommittee.ViewModels
 
         public void OnSaveCommandExecuted(object parameter)
         {
+            DataBaseConnection.ApplicationContext.Enrollee.ForEachAsync(dbEnrollee =>
+            {
+                EnrolleeDTO enrollee = Enrollees.Find(e => e.Id == dbEnrollee.Id);
+                dbEnrollee.Citizenship = enrollee.Citizenship;
+                dbEnrollee.PlaceOfResidence = enrollee.PlaceOfResidence;
+                dbEnrollee.District = enrollee.District;
+            });
             DataBaseConnection.ApplicationContext.SaveChanges();
         }
 

@@ -30,7 +30,7 @@ namespace AdmissionsCommittee.Models.DTO
                            string gender, DateOnly dateOfBirth, string snils,
                            DateOnly yearOfAdmission, PlaceOfResidence placeOfResidence = null, 
                            Citizenship citizenship = null, District district = null, Education education = null, 
-                           Disability disability = null,  Certificate certificate = null, Ward ward = null)
+                           Disability disability = null, Speciality speciality = null,  Certificate certificate = null, Ward ward = null)
         {
             Id = id;
             Name = name;
@@ -43,6 +43,7 @@ namespace AdmissionsCommittee.Models.DTO
             Education = education;
             Disability = disability;
             Certificate = certificate;
+            Speciality = speciality;
             Ward = ward;
             Citizenship = citizenship;
             PlaceOfResidence = placeOfResidence;

@@ -22,7 +22,7 @@ namespace AdmissionsCommittee.ViewModels
             {
                 return new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
                                        enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
-                                       enrollee.Snils, enrollee.YearOfAdmission, education: Educations.First(education => education.Id == enrollee.EducationId));
+                                       enrollee.Snils, enrollee.YearOfAdmission, education: Educations.FirstOrDefault(education => education.Id == enrollee.EducationId));
             });
             GoToAvarageScoreSnilsPageCommand = new LambdaCommand(OnAvarageScoreSnilsPageCommandExecuted, CanGoToAvarageScoreSnilsPageCommandExecute);
             GoToPlaceOfResidencePageCommand = new LambdaCommand(OnGoToPlaceOfResidencePageCommandExecuted, CanGoToPlaceOfResidencePageExecute);
@@ -66,7 +66,7 @@ namespace AdmissionsCommittee.ViewModels
 
         public bool CanGoToAvarageScoreSnilsPageCommandExecute(object parameter)
         {
-            return true;
+            return IsAllValid();
         }
 
         public void OnAvarageScoreSnilsPageCommandExecuted(object parameter)
@@ -121,10 +121,6 @@ namespace AdmissionsCommittee.ViewModels
         private bool CheckIsSaved()
         {
             DbSet<Enrollee> dbEnrollees = DataBaseConnection.ApplicationContext.Enrollee;
-            if (Enrollees.Count != dbEnrollees.Count())
-            {
-                return false;
-            }
             return Enrollees.All(enrollee =>
             {
                 Enrollee dbEnrollee = dbEnrollees.Find(enrollee.Id);
@@ -134,11 +130,7 @@ namespace AdmissionsCommittee.ViewModels
 
         private bool IsAllValid()
         {
-            return Enrollees.All(enrollee => !string.IsNullOrWhiteSpace(enrollee.Name) &&
-                                             !string.IsNullOrWhiteSpace(enrollee.Surname) &&
-                                             enrollee.DateOfBirth > DateOnly.MinValue &&
-                                             !string.IsNullOrWhiteSpace(enrollee.Snils) &&
-                                             !string.IsNullOrWhiteSpace(enrollee.Gender));
+            return Enrollees.All(enrollee => enrollee.Education != null);
         }
 
     }
