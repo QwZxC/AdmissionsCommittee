@@ -4,6 +4,7 @@ using AdmissionsCommittee.Models;
 using AdmissionsCommittee.Reports;
 using AdmissionsCommittee.Reports.ExcelGenerators;
 using AdmissionsCommittee.Types;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,11 +57,14 @@ namespace AdmissionsCommittee.ViewModels
 
         private void OnLoadToExcelCommandexecuted(object parameter)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Excel файлы (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+            openFileDialog.ShowDialog();
             MessageBox.Show("Идёт выгрузка, пожалуйста подождите");
             var ExelReport = ExcelGenerator.Generate(EnrolleeReport);
             try
             {
-                File.WriteAllBytes("../../../Reports/Files/Приёмная коммисия.xlsx", ExelReport);
+                File.WriteAllBytes(openFileDialog.FileName, ExelReport);
             }
             catch
             {

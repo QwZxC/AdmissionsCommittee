@@ -99,6 +99,7 @@ namespace AdmissionsCommittee.ViewModels
         private void OnLoadImageCommandExecuted(object parameter)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "PNG файлы (*.png)|*.png|All files (*.*)|*.*";
             openFileDialog.ShowDialog();
             if (!string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {

@@ -9,10 +9,10 @@ namespace AdmissionsCommittee.Models
         private string surname;
         private string? patronymic;
         private string gender;
-        private DateOnly dateOfBirth;
+        private DateTime dateOfBirth;
         private string snils;
         private int age;
-        private DateOnly yearOfAdmission;
+        private DateTime yearOfAdmission;
         private Education education;
         private Disability disability;
         private Certificate certificate;
@@ -26,8 +26,8 @@ namespace AdmissionsCommittee.Models
 
         public Enrollee() { }
         public Enrollee(string name, string surname, string patronymic,
-                        string gender, DateOnly dateOfBirth, string snils,
-                        DateOnly yearOfAdmission) 
+                        string gender, DateTime dateOfBirth, string snils,
+                        DateTime yearOfAdmission) 
         {
             Name = name;
             Surname = surname;
@@ -62,7 +62,7 @@ namespace AdmissionsCommittee.Models
             set { Set(ref gender, value); }
         }
 
-        public DateOnly DateOfBirth
+        public DateTime DateOfBirth
         {
             get { return dateOfBirth; }
             set { Set(ref dateOfBirth, value); }
@@ -76,11 +76,17 @@ namespace AdmissionsCommittee.Models
 
         public int Age
         {
-            get { return age; }
-            set { Set(ref age, value); }
+            get 
+            {
+                if(DateTime.Now.Month - DateOfBirth.Month >= 0 && DateTime.Now.Day - DateOfBirth.Day >= 0)
+                {
+                    return DateTime.Now.Year -DateOfBirth.Year;
+                }
+                return DateTime.Now.Year - DateOfBirth.Year - 1;
+            }
         }
 
-        public DateOnly YearOfAdmission
+        public DateTime YearOfAdmission
         {
             get { return yearOfAdmission; }
             set { Set(ref yearOfAdmission, value); }

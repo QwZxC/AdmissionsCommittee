@@ -82,7 +82,7 @@
                         </Style>
                     </DataGridCheckBoxColumn.ElementStyle>
                 </DataGridCheckBoxColumn>
-                
+
                 <DataGridCheckBoxColumn Header="Зачислен"
                                         MinWidth="120"
                                         Binding="{Binding IsEnlisted, UpdateSourceTrigger=PropertyChanged}">
@@ -100,11 +100,15 @@
                     </DataGridCheckBoxColumn.ElementStyle>
                 </DataGridCheckBoxColumn>
 
-                <DataGridTextColumn Header="Дата поступления"
-                                    Binding="{Binding YearOfAdmission}"
-                                    Width="*">
-                    <DataGridTextColumn.EditingElementStyle>
-                        <Style TargetType="TextBox">
+                <DataGridTemplateColumn Header="Дата поступления"
+                                        Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding YearOfAdmission, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
                             <Setter Property="IsEnabled" Value="False"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsEnlisted}" Value="true">
@@ -112,9 +116,8 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </DataGridTextColumn.EditingElementStyle>
-                </DataGridTextColumn>
-
+                    </DataGridTemplateColumn.CellStyle>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

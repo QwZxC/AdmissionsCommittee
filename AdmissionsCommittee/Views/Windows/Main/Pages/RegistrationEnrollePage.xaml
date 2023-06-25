@@ -58,7 +58,7 @@
                                     MinWidth="120"
                                     Binding="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}"
                                     Width="*"/>
-                
+
                 <DataGridComboBoxColumn Header="Пол"
                                         MinWidth="60"
                                         SelectedValueBinding="{Binding Gender, UpdateSourceTrigger=PropertyChanged}">
@@ -74,10 +74,15 @@
                         </CompositeCollection>
                     </DataGridComboBoxColumn.ItemsSource>
                 </DataGridComboBoxColumn>
-                
-                <DataGridTextColumn Header="Дата рождения"
-                                    MinWidth="200"
-                                    Binding="{Binding DateOfBirth, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <DataGridTemplateColumn Header="Дата рождения"
+                                        Width="200">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding DateOfBirth, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTextColumn Header="СНИЛС"
                                     MinWidth="160"

@@ -1,4 +1,4 @@
-Ôªøusing OfficeOpenXml;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,25 +17,25 @@ namespace AdmissionsCommittee.Reports.ExcelGenerators
             var sheet = package.Workbook.Worksheets
                 .Add("EnrolleeReport");
 
-            sheet.Cells["C1"].Value = "–ê–±–∏—Ç—É—Ä–∏–µ–Ω—Ç—ã";
-
-            sheet.Cells["A2"].Value = "–ò–º—è";
-            sheet.Cells["B2"].Value = "–§–∞–º–∏–ª–∏—è";
-            sheet.Cells["C2"].Value = "–û—Ç—á–µ—Å—Ç–≤–æ";
-            sheet.Cells["D2"].Value = "–ü–æ–ª";
-            sheet.Cells["E2"].Value = "–î–∞—Ç–∞ —Ä–æ–∂–¥–µ–Ω–∏—è";
-            sheet.Cells["F2"].Value = "–°–ù–ò–õ–°";
-            sheet.Cells["G2"].Value = "–ì–æ–¥ –ø–æ—Å—Ç—É–ø–ª–µ–Ω–∏—è";
-            sheet.Cells["H2"].Value = "–ë—é–¥–∂–µ—Ç";
-            sheet.Cells["I2"].Value = "–ó–∞—á–∏—Å–ª–µ–Ω";
-            sheet.Cells["J2"].Value = "–ì—Ä–∞–∂–¥–∞–Ω—Å—Ç–≤–æ";
-            sheet.Cells["K2"].Value = "–û–±—Ä–∞–∑–æ–≤–∞–Ω–∏–µ";
-            sheet.Cells["L2"].Value = "–ò–Ω–≤–∞–ª–∏–¥–Ω–æ—Å—Ç—å";
-            sheet.Cells["M2"].Value = "–°—Ä–µ–¥–Ω–∏–π –±–∞–ª –∞—Ç—Ç–µ—Å—Ç–∞—Ç–∞";
-            sheet.Cells["N2"].Value = "–û—Ä–∏–≥–∏–Ω–∞–ª –∞—Ç—Ç–µ—Å—Ç–∞—Ç–∞";
-            sheet.Cells["O2"].Value = "–û–ø–µ–∫–∞–µ–º—ã–π";
-            sheet.Cells["P2"].Value = "–°—É–±—ä–µ–∫—Ç –ø—Ä–æ–∂–∏–≤–∞–Ω–∏—è";
-            sheet.Cells["Q2"].Value = "–†–∞–π–æ–Ω";
+            sheet.Cells["C1"].Value = "¿·ËÚÛËÂÌÚ˚";
+            sheet.Cells["A2"].Value = "»Ïˇ";
+            sheet.Cells["B2"].Value = "‘‡ÏËÎËˇ";
+            sheet.Cells["C2"].Value = "ŒÚ˜ÂÒÚ‚Ó";
+            sheet.Cells["D2"].Value = "œÓÎ";
+            sheet.Cells["E2"].Value = "ƒ‡Ú‡ ÓÊ‰ÂÌËˇ";
+            sheet.Cells["F2"].Value = "¬ÓÁ‡ÒÚ";
+            sheet.Cells["G2"].Value = "—Õ»À—";
+            sheet.Cells["H2"].Value = "√Ó‰ ÔÓÒÚÛÔÎÂÌËˇ";
+            sheet.Cells["I2"].Value = "¡˛‰ÊÂÚ";
+            sheet.Cells["J2"].Value = "«‡˜ËÒÎÂÌ";
+            sheet.Cells["K2"].Value = "√‡Ê‰‡ÌÒÚ‚Ó";
+            sheet.Cells["L2"].Value = "Œ·‡ÁÓ‚‡ÌËÂ";
+            sheet.Cells["M2"].Value = "»Ì‚‡ÎË‰ÌÓÒÚ¸";
+            sheet.Cells["N2"].Value = "—Â‰ÌËÈ ·‡Î ‡ÚÚÂÒÚ‡Ú‡";
+            sheet.Cells["O2"].Value = "ŒË„ËÌ‡Î ‡ÚÚÂÒÚ‡Ú‡";
+            sheet.Cells["P2"].Value = "ŒÔÂÍ‡ÂÏ˚È";
+            sheet.Cells["Q2"].Value = "—Û·˙ÂÍÚ ÔÓÊË‚‡ÌËˇ";
+            sheet.Cells["R2"].Value = "–‡ÈÓÌ";
             
             report.Enrollees.ForEach(enrollee =>
             {
@@ -45,26 +45,27 @@ namespace AdmissionsCommittee.Reports.ExcelGenerators
                 sheet.Cells[index, 3].Value = enrollee.Patronymic;
                 sheet.Cells[index, 4].Value = enrollee.Gender;
                 sheet.Cells[index, 5].Value = enrollee.DateOfBirth;
-                sheet.Cells[index, 6].Value = enrollee.Snils;
-                sheet.Cells[index, 7].Value = enrollee.YearOfAdmission;
-                sheet.Cells[index, 8].Value = enrollee.IsBudget;
-                sheet.Cells[index, 9].Value = enrollee.IsEnlisted;
-                sheet.Cells[index, 10].Value = enrollee.Citizenship.Country;
-                sheet.Cells[index, 11].Value = enrollee.Education.DisplayName;
-                sheet.Cells[index, 12].Value = "–û—Ç—Å—É—Ç—Å—Ç–≤—É–µ—Ç";
+                sheet.Cells[index, 6].Value = enrollee.Age;
+                sheet.Cells[index, 7].Value = enrollee.Snils;
+                sheet.Cells[index, 8].Value = enrollee.YearOfAdmission;
+                sheet.Cells[index, 9].Value = enrollee.IsBudget;
+                sheet.Cells[index, 10].Value = enrollee.IsEnlisted;
+                sheet.Cells[index, 11].Value = enrollee.Citizenship.Country;
+                sheet.Cells[index, 12].Value = enrollee.Education.DisplayName;
+                sheet.Cells[index, 13].Value = "ŒÚÒÛÚÒÚ‚ÛÂÚ";
                 if (enrollee.Disability.Document != null)
                 {
-                    sheet.Cells[index, 12].Value = "–ï—Å—Ç—å";
+                    sheet.Cells[index, 13].Value = "≈ÒÚ¸";
                 }
-                sheet.Cells[index, 13].Value = enrollee.Certificate.AvarageScore;
-                sheet.Cells[index, 14].Value = enrollee.Certificate.Original;
-                sheet.Cells[index, 15].Value = "–ù–µ—Ç";
+                sheet.Cells[index, 14].Value = enrollee.Certificate.AvarageScore;
+                sheet.Cells[index, 15].Value = enrollee.Certificate.Original;
+                sheet.Cells[index, 16].Value = "ÕÂÚ";
                 if (enrollee.Ward.Document != null)
                 {
-                    sheet.Cells[index, 15].Value = "–î–∞";
+                    sheet.Cells[index, 16].Value = "ƒ‡";
                 }
-                sheet.Cells[index, 16].Value = enrollee.PlaceOfResidence.Name;
-                sheet.Cells[index, 17].Value = enrollee.District.Name;
+                sheet.Cells[index, 17].Value = enrollee.PlaceOfResidence.Name;
+                sheet.Cells[index, 18].Value = enrollee.District.Name;
                 return;
             });
 

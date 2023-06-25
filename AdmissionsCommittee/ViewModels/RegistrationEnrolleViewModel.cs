@@ -232,7 +232,7 @@ namespace AdmissionsCommittee.ViewModels
         {
             return Enrollees.All(enrollee => !string.IsNullOrWhiteSpace(enrollee.Name) &&
                                              !string.IsNullOrWhiteSpace(enrollee.Surname) &&
-                                             enrollee.DateOfBirth > DateOnly.MinValue &&
+                                             enrollee.DateOfBirth > DateTime.MinValue &&
                                              !string.IsNullOrWhiteSpace(enrollee.Snils) &&
                                              !string.IsNullOrWhiteSpace(enrollee.Gender));
         }

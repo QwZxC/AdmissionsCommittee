@@ -51,7 +51,7 @@ namespace AdmissionsCommittee.Migrations
                 name: "PlaceOfResidenceId",
                 table: "District");
 
-            migrationBuilder.AlterColumn<DateOnly>(
+            migrationBuilder.AlterColumn<DateTime>(
                 name: "YearOfAdmission",
                 table: "Enrollee",
                 type: "date",
@@ -107,7 +107,7 @@ namespace AdmissionsCommittee.Migrations
                 oldClrType: typeof(int),
                 oldType: "integer");
 
-            migrationBuilder.AlterColumn<DateOnly>(
+            migrationBuilder.AlterColumn<DateTime>(
                 name: "DateOfBirth",
                 table: "Enrollee",
                 type: "date",
@@ -247,7 +247,7 @@ namespace AdmissionsCommittee.Migrations
                 table: "Enrollee",
                 type: "timestamp with time zone",
                 nullable: false,
-                oldClrType: typeof(DateOnly),
+                oldClrType: typeof(DateTime),
                 oldType: "date");
 
             migrationBuilder.AlterColumn<int>(
@@ -315,7 +315,7 @@ namespace AdmissionsCommittee.Migrations
                 table: "Enrollee",
                 type: "timestamp with time zone",
                 nullable: false,
-                oldClrType: typeof(DateOnly),
+                oldClrType: typeof(DateTime),
                 oldType: "date");
 
             migrationBuilder.AlterColumn<int>(

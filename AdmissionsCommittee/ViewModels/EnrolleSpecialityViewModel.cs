@@ -22,7 +22,8 @@ namespace AdmissionsCommittee.ViewModels
             {
                 return new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
                                        enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
-                                       enrollee.Snils, enrollee.YearOfAdmission, speciality: Specialities.FirstOrDefault(speciality => speciality.Id == enrollee.SpecialityId));
+                                       enrollee.Snils, enrollee.YearOfAdmission, speciality: Specialities.FirstOrDefault(speciality => speciality.Id == enrollee.SpecialityId),
+                                       isBudget: enrollee.IsBudget, isEnlisted: enrollee.IsEnlisted);
             });
             GoToDisabilityPageCommand = new LambdaCommand(OnGoToDisabilityPageCommandExecuted, CanGoToDisabilityPageCommandExecute);
             GoToCertificatePageCommand = new LambdaCommand(OnGoToCertificatePageCommandExecuted, CanGoToCertificatePageCommandExecute);
@@ -106,7 +107,11 @@ namespace AdmissionsCommittee.ViewModels
             DbSet<Enrollee> dbEnrollees = DataBaseConnection.ApplicationContext.Enrollee;
             Enrollees.ToList().ForEach(enrollee =>
             {
-                dbEnrollees.Find(enrollee.Id).Speciality = enrollee.Speciality;
+                Enrollee dbEnrollee = dbEnrollees.Find(enrollee.Id);
+                dbEnrollee.Speciality = enrollee.Speciality;
+                dbEnrollee.IsEnlisted = enrollee.IsEnlisted;
+                dbEnrollee.YearOfAdmission = enrollee.YearOfAdmission;
+
             });
             DataBaseConnection.ApplicationContext.SaveChanges();
         }
@@ -124,7 +129,9 @@ namespace AdmissionsCommittee.ViewModels
             return Enrollees.All(enrollee =>
             {
                 Enrollee dbEnrollee = dbEnrollees.Find(enrollee.Id);
-                return enrollee.Speciality == dbEnrollee.Speciality;
+                return enrollee.Speciality == dbEnrollee.Speciality &&
+                       enrollee.IsEnlisted == dbEnrollee.IsEnlisted &&
+                       enrollee.YearOfAdmission == dbEnrollee.YearOfAdmission;
             });
         }
 

@@ -139,7 +139,7 @@ namespace AdmissionsCommittee.Migrations
                     b.Property<int?>("CitizenshipId")
                         .HasColumnType("integer");
 
-                    b.Property<DateOnly>("DateOfBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("date");
 
                     b.Property<int?>("DisabilityId")
@@ -185,7 +185,7 @@ namespace AdmissionsCommittee.Migrations
                     b.Property<int?>("WardId")
                         .HasColumnType("integer");
 
-                    b.Property<DateOnly>("YearOfAdmission")
+                    b.Property<DateTime>("YearOfAdmission")
                         .HasColumnType("date");
 
                     b.HasKey("Id");

@@ -11,10 +11,10 @@ namespace AdmissionsCommittee.Models.DTO
         private string surname;
         private string? patronymic;
         private string gender;
-        private DateOnly dateOfBirth;
+        private DateTime dateOfBirth;
         private string snils;
         private int age;
-        private DateOnly yearOfAdmission;
+        private DateTime yearOfAdmission;
         private Education education;
         private Disability disability;
         private Certificate certificate;
@@ -27,10 +27,11 @@ namespace AdmissionsCommittee.Models.DTO
         private bool isEnlisted;
 
         public EnrolleeDTO(int id, string name, string surname, string patronymic,
-                           string gender, DateOnly dateOfBirth, string snils,
-                           DateOnly yearOfAdmission, PlaceOfResidence placeOfResidence = null, 
+                           string gender, DateTime dateOfBirth, string snils,
+                           DateTime yearOfAdmission, PlaceOfResidence placeOfResidence = null, 
                            Citizenship citizenship = null, District district = null, Education education = null, 
-                           Disability disability = null, Speciality speciality = null,  Certificate certificate = null, Ward ward = null)
+                           Disability disability = null, Speciality speciality = null,  Certificate certificate = null, Ward ward = null,
+                           bool isBudget = false, bool isEnlisted = false)
         {
             Id = id;
             Name = name;
@@ -48,6 +49,8 @@ namespace AdmissionsCommittee.Models.DTO
             Citizenship = citizenship;
             PlaceOfResidence = placeOfResidence;
             District = district;
+            IsEnlisted = isEnlisted;
+            IsBudget = isBudget;
         }
 
         public EnrolleeDTO() { }
@@ -76,7 +79,7 @@ namespace AdmissionsCommittee.Models.DTO
             set { Set(ref gender, value); }
         }
 
-        public DateOnly DateOfBirth
+        public DateTime DateOfBirth
         {
             get { return dateOfBirth; }
             set { Set(ref dateOfBirth, value); }
@@ -94,7 +97,7 @@ namespace AdmissionsCommittee.Models.DTO
             set { Set(ref age, value); }
         }
 
-        public DateOnly YearOfAdmission
+        public DateTime YearOfAdmission
         {
             get { return yearOfAdmission; }
             set { Set(ref yearOfAdmission, value); }

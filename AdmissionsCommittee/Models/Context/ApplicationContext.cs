@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace AdmissionsCommittee.Models.Context
 {
@@ -24,6 +25,7 @@ namespace AdmissionsCommittee.Models.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=AdmissionsCommittee;Username=postgres;Password=301600");
         }
     }

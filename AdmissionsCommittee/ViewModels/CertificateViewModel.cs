@@ -108,10 +108,11 @@ namespace AdmissionsCommittee.ViewModels
         private void OnLoadImageCommandExecuted(object parameter)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "PNG файлы (*.png)|*.png|All files (*.*)|*.*";
             openFileDialog.ShowDialog();
             if (!string.IsNullOrWhiteSpace(openFileDialog.FileName))
             {
-                (parameter as Enrollee).Certificate.Photo = File.ReadAllBytes(openFileDialog.FileName);
+                (parameter as EnrolleeDTO).Certificate.Photo = File.ReadAllBytes(openFileDialog.FileName);
             }
         }
 
@@ -128,10 +129,10 @@ namespace AdmissionsCommittee.ViewModels
 
         private void OnRemoveImageCommandExecuted(object parameter)
         {
-            byte[] image = (parameter as Enrollee).Certificate.Photo;
+            byte[] image = (parameter as EnrolleeDTO).Certificate.Photo;
             if (image != null)
             {
-                (parameter as Enrollee).Certificate.Photo = null;
+                (parameter as EnrolleeDTO).Certificate.Photo = null;
                 MessageBox.Show("Успешно удалено!", "Успех!");
             }
             else

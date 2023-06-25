@@ -6,7 +6,7 @@
         xmlns:vm="clr-namespace:AdmissionsCommittee.ViewModels"
         xmlns:local="clr-namespace:AdmissionsCommittee"
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="332" MinWidth="1100">
+        Title="Приёмная коммисия" MinHeight="332" MinWidth="1100">
 
     <Window.DataContext>
         <vm:MainViewModel/>
