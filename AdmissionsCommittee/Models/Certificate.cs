@@ -1,4 +1,4 @@
-﻿    using AdmissionsCommittee.Models.Base;
+﻿using AdmissionsCommittee.Models.Base;
 
 namespace AdmissionsCommittee.Models
 {
