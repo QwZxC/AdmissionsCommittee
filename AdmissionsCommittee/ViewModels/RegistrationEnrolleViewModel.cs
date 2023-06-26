@@ -102,11 +102,11 @@ namespace AdmissionsCommittee.ViewModels
 
         public void OnRemoveCommandExecuted(object parameter)
         {
-            SelectedEnrolle.ToList().ForEach(enrolee => Enrollees.Remove(enrolee));
             DbSet<Enrollee> dbEnroleee = DataBaseConnection.ApplicationContext.Enrollee;
             SelectedEnrolle.ToList().ForEach(enrollee => 
             {
                 Enrollee dbEnrollee = dbEnroleee.Find(enrollee.Id);
+                Enrollees.Remove(enrollee);
                 if (dbEnrollee != null)
                 {
                     RemovedEnrolle.Add(dbEnrollee);

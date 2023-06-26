@@ -51,6 +51,8 @@ namespace AdmissionsCommittee.Models.DTO
             District = district;
             IsEnlisted = isEnlisted;
             IsBudget = isBudget;
+            EducationId = education?.Id;
+            SpecialityId = speciality?.Id;
         }
 
         public EnrolleeDTO() { }

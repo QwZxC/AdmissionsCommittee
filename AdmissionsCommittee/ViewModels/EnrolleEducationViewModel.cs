@@ -45,16 +45,15 @@ namespace AdmissionsCommittee.ViewModels
             return true;
         }
 
-        public async void OnOpenEducationWindowCommandExecuted(object parameter)
+        public void OnOpenEducationWindowCommandExecuted(object parameter)
         {
             EducationWindow educationWindow = new EducationWindow();
             educationWindow.ShowDialog();
-            await DataBaseConnection.ApplicationContext.Education.ForEachAsync(education =>
+            Educations.Clear();
+            DataBaseConnection.ApplicationContext.Education.ToList().ForEach(Educations.Add);
+            Enrollees.ForEach(enrollee =>
             {
-                if (!Educations.Contains(education))
-                {
-                    Educations.Add(education);
-                }
+                enrollee.Education = Educations.FirstOrDefault(education => education.Id == enrollee.EducationId);
             });
         }
 

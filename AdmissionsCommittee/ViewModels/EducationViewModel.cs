@@ -83,7 +83,16 @@ namespace AdmissionsCommittee.ViewModels
 
         public void OnRemoveCommandExecuted(object parameter)
         {
-            SelectedEducations.ToList().ForEach(item => Educations.Remove(item));
+            DbSet<Education> dbEducations = DataBaseConnection.ApplicationContext.Education;
+            SelectedEducations.ToList().ForEach(item =>
+            {
+                Education dbEducation = dbEducations.Find(item.Id);
+                Educations.Remove(item);
+                if (dbEducation != null)
+                {
+                    dbEducations.Remove(dbEducation);
+                }
+            });
             SelectedEducations.Clear();
         }
 
