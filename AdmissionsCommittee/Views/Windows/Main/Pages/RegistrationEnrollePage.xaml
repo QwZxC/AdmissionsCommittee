@@ -115,7 +115,7 @@
             </DataGrid.Columns>
         </DataGrid>
         
-        <DockPanel Grid.RowSpan="2"
+        <DockPanel Grid.RowSpan="3"
                    Grid.Column="1"
                    Style="{StaticResource buttonsPanel}">
 
