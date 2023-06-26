@@ -18,6 +18,8 @@ namespace AdmissionsCommittee.ViewModels
     {
         private ObservableCollection<EnrolleeDTO> enrollees;
         private bool isAllSelected;
+        private string selectedParameter;
+        private string filterString;
         public RegistrationEnrolleViewModel()
         {
             Enrollees = new ObservableCollection<EnrolleeDTO>(DataBaseConnection.ApplicationContext.Enrollee.ToList().ConvertAll(enrollee =>
@@ -26,6 +28,8 @@ namespace AdmissionsCommittee.ViewModels
                                        enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
                                        enrollee.Snils, enrollee.YearOfAdmission);
             }));
+            Parametrs = new List<string>() { "Имя", "Фамилия", "Отчество", "Гражданство", "Субъект", "Район" };
+            
             SelectedEnrolle = new ObservableCollection<EnrolleeDTO>();
             RemovedEnrolle = new List<Enrollee>();
             Enrollees.CollectionChanged += IsAllSelectedCheck;
@@ -34,9 +38,11 @@ namespace AdmissionsCommittee.ViewModels
             AddCommand = new LambdaCommand(OnAddCommandExecuted,CanAddCommandExecute);
             RemoveCommand = new LambdaCommand(OnRemoveCommandExecuted ,CanRemoveCommandExecute);
             SaveCommand = new LambdaCommand(OnSaveCommandExecuted, CanSaveCommandExecute);
+            FindFilterElementsCommand = new LambdaCommand(OnFindFilterElementsCommandExecuted, CanFindFilterElementsCommandExecute);
             GoToSelectCitizenshipCommand = new LambdaCommand(OnGoToSelectCitizenshipCommandExecuted, CanGoToSelectCitizenshipCommandExecute);
             ChangeItemSelectionCommand = new LambdaCommand(OnChangeItemSelectionCommandExecuted, CanChangeItemSelectionCommandExecute);
             ChangeAllSelectionCommand = new LambdaCommand(OnChangeAllSelectionCommandExecuted, CanChangeAllSelectionCommandExecute);
+            CancleFiltrationCommand = new LambdaCommand(OnCancleFiltrationCommandExecuted, CanCancleFiltrationCommandExecute);
         }
 
         public ObservableCollection<EnrolleeDTO> Enrollees
@@ -44,7 +50,18 @@ namespace AdmissionsCommittee.ViewModels
             get { return enrollees; }
             set { Set(ref enrollees, value); }
         }
-
+        public List<string> Parametrs { get; set; }
+        public string SelectedParameter
+        {
+            get { return selectedParameter; }
+            set { Set(ref selectedParameter, value); }
+        }
+        
+        public string FilterString
+        {
+            get { return filterString; }
+            set { Set(ref filterString, value); }
+        }
         public ObservableCollection<EnrolleeDTO> SelectedEnrolle { get; set; }
         public List<Enrollee> RemovedEnrolle { get; set; }
 
@@ -198,8 +215,106 @@ namespace AdmissionsCommittee.ViewModels
 
         #endregion
 
+        #region FindFilterElementsCommand
+        
+        public ICommand FindFilterElementsCommand { get; set;}
+
+        private bool CanFindFilterElementsCommandExecute(object parameter)
+        {
+            return !string.IsNullOrWhiteSpace(SelectedParameter);
+        }
+
+        private void OnFindFilterElementsCommandExecuted(object parameter)
+        {
+            
+            List<Enrollee> dbEnrollee = DataBaseConnection.ApplicationContext.Enrollee.ToList();
+            if (string.IsNullOrWhiteSpace(FilterString))
+            {
+                return;
+            }
+            Enrollees.Clear();
+            switch (selectedParameter)
+            {
+                case "Имя":
+                    dbEnrollee.FindAll(enrollee => enrollee.Name.Contains(filterString)).ForEach(enrollee => 
+                    {
+                        Enrollees.Add(new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
+                                                      enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
+                                                      enrollee.Snils, enrollee.YearOfAdmission));
+                    });
+                    break;
+                case "Фамилия":
+                    dbEnrollee.FindAll(enrollee => enrollee.Surname.Contains(filterString)).ForEach(enrollee =>
+                    {
+                        Enrollees.Add(new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
+                                                      enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
+                                                      enrollee.Snils, enrollee.YearOfAdmission));
+                    });
+                    break;
+                case "Отчество":
+                    dbEnrollee.FindAll(enrollee => enrollee.Patronymic.Contains(filterString)).ForEach(enrollee =>
+                    {
+                        Enrollees.Add(new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
+                                                      enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
+                                                      enrollee.Snils, enrollee.YearOfAdmission));
+                    });
+                    break;
+                case "Гражданство":
+                    dbEnrollee.FindAll(enrollee => enrollee.Citizenship.Country.Contains(filterString)).ForEach(enrollee =>
+                    {
+                        Enrollees.Add(new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
+                                                      enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
+                                                      enrollee.Snils, enrollee.YearOfAdmission));
+                    });
+                    break;
+                case "Субъект":
+                    dbEnrollee.FindAll(enrollee => enrollee.PlaceOfResidence.Name.Contains(filterString)).ForEach(enrollee =>
+                    {
+                        Enrollees.Add(new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
+                                                      enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
+                                                      enrollee.Snils, enrollee.YearOfAdmission));
+                    });
+                    break;
+                case "Район":
+                    dbEnrollee.FindAll(enrollee => enrollee.District.Name.Contains(filterString)).ForEach(enrollee =>
+                    {
+                        Enrollees.Add(new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
+                                                      enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
+                                                      enrollee.Snils, enrollee.YearOfAdmission));
+                    });
+                    break;
+            }
+            if (Enrollees.Count == 0)
+            {
+                MessageBox.Show("Не найдено!");
+            }
+        }
+
         #endregion
 
+        #region CancleFiltrationCommand
+
+        public ICommand CancleFiltrationCommand { get; set; }
+
+        private bool CanCancleFiltrationCommandExecute(object parameter)
+        {
+            return true;
+        }
+
+        private void OnCancleFiltrationCommandExecuted(object parameter)
+        {
+            Enrollees.Clear();
+            DataBaseConnection.ApplicationContext.Enrollee.ToList().ForEach(enrollee =>
+            {
+                Enrollees.Add(new EnrolleeDTO(enrollee.Id, enrollee.Name, enrollee.Surname,
+                                              enrollee.Patronymic, enrollee.Gender, enrollee.DateOfBirth,
+                                              enrollee.Snils, enrollee.YearOfAdmission));
+            });
+        }
+
+        #endregion
+
+        #endregion
         private bool IsAllSaved()
         {
             return IsChanged = CheckIsSaved();

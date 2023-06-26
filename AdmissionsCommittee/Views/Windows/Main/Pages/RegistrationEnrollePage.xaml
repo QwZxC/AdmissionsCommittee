@@ -17,6 +17,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         
@@ -32,8 +33,32 @@
                FontFamily="Courier New"
                FontSize="30"/>
 
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
+            
+            <ComboBox ItemsSource="{Binding Parametrs}"
+                      FontSize="20"
+                      SelectedItem="{Binding SelectedParameter}"
+                      Margin="5"/>
+            
+            <TextBox MinWidth="200"
+                     Margin="5"
+                     FontSize="20"
+                     Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <Button Content="Найти"
+                    FontSize="20"
+                    Margin="5"
+                    Command="{Binding FindFilterElementsCommand}"/>
+            
+            <Button Content="Отмена"
+                    Margin="5"
+                    FontSize="20"
+                    Command="{Binding CancleFiltrationCommand}"/>
+        </StackPanel>
+
         <DataGrid Grid.Column="0"
-                  Grid.Row="1"
+                  Grid.Row="2"
                   ItemsSource="{Binding Enrollees}"
                   Style="{StaticResource BaseDataGrid}">
 
