@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AdmissionsCommittee.Views.Windows.Education"
         xmlns:vm="clr-namespace:AdmissionsCommittee.ViewModels"
         mc:Ignorable="d"
-        Title="EducationWindow" Height="450" Width="800">
+        Title="Окно образований" Height="450" Width="800">
     
     <Window.DataContext>
         <vm:EducationViewModel/>
@@ -25,7 +25,7 @@
 
         <Label Grid.Row="0"
                HorizontalContentAlignment="Center"
-               Content="Образование"
+               Content="Окно образований"
                Grid.ColumnSpan="2"
                FontFamily="Courier New"
                FontSize="30"/>

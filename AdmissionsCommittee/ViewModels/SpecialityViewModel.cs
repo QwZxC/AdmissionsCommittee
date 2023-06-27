@@ -3,6 +3,7 @@ using AdmissionsCommittee.Infrastructure;
 using AdmissionsCommittee.Models;
 using AdmissionsCommittee.Models.DTO;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace AdmissionsCommittee.ViewModels
             {
                 return new SpecialityDTO(speciality.Id, speciality.Name, speciality.DivisionСode);
             }));
+            RemovedSpecialities = new List<Speciality>();
             SelectedSpecialities = new ObservableCollection<SpecialityDTO>();
             Specialities.CollectionChanged += IsAllSelectedCheck;
             SelectedSpecialities.CollectionChanged += SelectedCollectionChanged;
@@ -38,6 +40,8 @@ namespace AdmissionsCommittee.ViewModels
             get { return specialities; } 
             set { Set(ref specialities, value); }
         }
+
+        public List<Speciality> RemovedSpecialities { get; set; }
 
         public ObservableCollection<SpecialityDTO> SelectedSpecialities
         {
@@ -109,6 +113,7 @@ namespace AdmissionsCommittee.ViewModels
         public void OnSaveCommandExecuted(object parameter)
         {
             DbSet<Speciality> dbSpecialities = DataBaseConnection.ApplicationContext.Speciality;
+            RemovedSpecialities.ForEach(speciality => dbSpecialities.Remove(speciality));
             Specialities.ToList().ForEach(speciality =>
             {
                 Speciality dbSpeciality = dbSpecialities.Find(speciality.Id);

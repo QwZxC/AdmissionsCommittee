@@ -100,8 +100,7 @@
                     </DataGridCheckBoxColumn.ElementStyle>
                 </DataGridCheckBoxColumn>
 
-                <DataGridTemplateColumn Header="Дата поступления"
-                                        Width="*">
+                <DataGridTemplateColumn Header="Дата поступления">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <DatePicker SelectedDate="{Binding YearOfAdmission, UpdateSourceTrigger=PropertyChanged}"/>
