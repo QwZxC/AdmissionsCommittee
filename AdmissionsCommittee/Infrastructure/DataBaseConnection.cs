@@ -1,4 +1,5 @@
 ﻿using AdmissionsCommittee.Models.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdmissionsCommittee.Infrastructure
 {
@@ -9,6 +10,7 @@ namespace AdmissionsCommittee.Infrastructure
         static DataBaseConnection()
         {
             ApplicationContext = new ApplicationContext();
+            ApplicationContext.Database.Migrate();
         }
     }
 }
